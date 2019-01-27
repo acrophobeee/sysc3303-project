@@ -8,12 +8,12 @@
 import java.io.*;
 import java.net.*;
 
-public class Host {
+public class Scheduler {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket serverSocket, clientSocket;
 
-	public Host() {
+	public Scheduler() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -166,7 +166,7 @@ public class Host {
 	}
 
 	public static void main(String args[]) {
-		Host c = new Host();
+		Scheduler c = new Scheduler();
 		c.receiveAndEcho();
 	}
 }

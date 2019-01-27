@@ -8,12 +8,12 @@
 import java.io.*;
 import java.net.*;
 
-public class Server {
+public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
 
-	public Server() {
+	public ElevatorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -125,7 +125,7 @@ public class Server {
 	}
 
 	public static void main(String args[]) {
-		Server c = new Server();
+		ElevatorSubsystem c = new ElevatorSubsystem();
 		try {
 			c.receiveAndEcho();
 		} catch (Exception e) {

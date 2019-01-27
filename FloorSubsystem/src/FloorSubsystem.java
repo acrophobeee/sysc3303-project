@@ -10,12 +10,12 @@ import java.net.*;
 import java.util.*;
 
 
-public class Client {
+public class FloorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendReceiveSocket;
     
-	public Client() {
+	public FloorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -95,7 +95,7 @@ public class Client {
 
 	public static void main(String args[]) {
 	    Date a = new Date();
-		Client c = new Client();
+		FloorSubsystem c = new FloorSubsystem();
 		
 		for (int i = 0; i < 10; ++i) {
 			if (i % 2 == 0) {
