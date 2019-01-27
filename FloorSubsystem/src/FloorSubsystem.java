@@ -96,14 +96,9 @@ public class FloorSubsystem {
 	public static void main(String args[]) {
 	    Date a = new Date();
 		FloorSubsystem c = new FloorSubsystem();
+		c.sendAndReceive(a, 1, "up");
+		c.sendAndReceive(a, 1, "down");
 		
-		for (int i = 0; i < 10; ++i) {
-			if (i % 2 == 0) {
-				c.sendAndReceive(a, 1, "up ");
-			} else {
-				c.sendAndReceive(a, 7 , "down ");
-			}
-		}
 		c.stopClient();
 	}
 
