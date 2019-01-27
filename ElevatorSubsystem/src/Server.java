@@ -37,7 +37,7 @@ public class Server {
 		while (true) {
 			// Construct a DatagramPacket for receiving packets up
 			// to 100 bytes long (the length of the byte array).
-			byte data[] = new byte[100];
+			byte data[] = new byte[60];
 			receivePacket = new DatagramPacket(data, data.length);
 			System.out.println("Server: Waiting for Packet.\n");
 
@@ -69,52 +69,21 @@ public class Server {
 			}
 			System.out.println(temp + "\n");
 
-			// Slow things down (wait 5 seconds)
+			// Slow things down (wait 0.5 seconds)
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
 
-			// ----------------------------------------
-			if (data[0] != (byte) 0 || (data[1] != (byte) 1 && data[1] != (byte) 2)) {
-				stopServer();
-				throw new Exception("Invalid request");
-			}
-
-			int i;
-			for (i = 2; i < data.length; ++i) {
-				if (data[i] == (byte) 0) {
-					if (i == 2) {
-						stopServer();
-						throw new Exception("Invalid request");
-					}
-					break;
-				}
-			}
-
-			for (int j = i + 1; j < data.length; ++j) {
-				if (data[j] == (byte) 0) {
-					if (j == i) {
-						stopServer();
-						throw new Exception("Invalid request");
-					}
-					break;
-				}
-			}
+			
 			byte dataBack[] = new byte[4];
-			if (data[1] == (byte) 1) {
 				dataBack[0] = (byte) 0;
 				dataBack[1] = (byte) 3;
 				dataBack[2] = (byte) 0;
 				dataBack[3] = (byte) 1;
-			} else {
-				dataBack[0] = (byte) 0;
-				dataBack[1] = (byte) 4;
-				dataBack[2] = (byte) 0;
-				dataBack[3] = (byte) 0;
-			}
+			
 
 			// ----------------------------------------
 
