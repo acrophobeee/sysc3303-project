@@ -7,13 +7,15 @@
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
-public class Client {
+
+public class FloorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendReceiveSocket;
-
-	public Client() {
+    
+	public FloorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -25,39 +27,20 @@ public class Client {
 		}
 	}
 
-	public void sendAndReceive(byte type, String filename, String mode) {
-		// Prepare a DatagramPacket and send it via sendReceiveSocket
-		// to port 5000 on the destination host.
+	public void sendAndReceive(Date date, int floor, String Button) {
+		System.out.println("Client: sending a request with \n present time: " + date + "\n mode: " + Button);
 
-		// String filename = "test.txt";
-		// String mode = "ocTEt";
-		System.out.println("Client: sending a request with \n filename: " + filename + "\n mode: " + mode);
 
-		// Java stores characters as 16-bit Unicode values, but
-		// DatagramPackets store their messages as byte arrays.
-		// Convert the String into bytes according to the platform's
-		// default character encoding, storing the result into a new
-		// byte array.
-
-		byte nameByte[] = filename.getBytes();
-		byte modeByte[] = mode.getBytes();
-
-		byte request[] = new byte[nameByte.length + modeByte.length + 4];
-		request[0] = (byte) 0;
-		request[1] = type;
-
-		int n = 2;
-		for (int i = 0; i < nameByte.length; ++i) {
-			request[n] = nameByte[i];
-			n++;
-		}
-		request[n] = (byte) 0;
-		n++;
-		for (int i = 0; i < modeByte.length; ++i) {
-			request[n] = modeByte[i];
-			n++;
-		}
-		request[n] = (byte) 0;
+		byte But[] = Button.getBytes();
+		String floors = String.valueOf(floor);
+		byte floorByte[] = floors.getBytes();
+        String d = date.toString();
+        byte dat[] = d.getBytes();
+		byte request[] = new byte[But.length + floorByte.length + dat.length];
+		
+		System.arraycopy(But, 0, request, 0, But.length);
+		System.arraycopy(floorByte, 0, request, But.length, floorByte.length);
+		System.arraycopy(dat, 0, request, But.length+ floorByte.length, dat.length);
 
 		System.out.println(request);
 
@@ -111,18 +94,16 @@ public class Client {
 	}
 
 	public static void main(String args[]) {
-		byte invaild = (byte) 0;
-		byte read = (byte) 1;
-		byte write = (byte) 2;
-		Client c = new Client();
+	    Date a = new Date();
+		FloorSubsystem c = new FloorSubsystem();
+		
 		for (int i = 0; i < 10; ++i) {
 			if (i % 2 == 0) {
-				c.sendAndReceive(read, "test.txt", "ocTEt");
+				c.sendAndReceive(a, 1, "up ");
 			} else {
-				c.sendAndReceive(write, "test.txt", "ocTEt");
+				c.sendAndReceive(a, 7 , "down ");
 			}
 		}
-		c.sendAndReceive(invaild, "test.txt", "ocTEt");
 		c.stopClient();
 	}
 
