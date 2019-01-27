@@ -57,7 +57,7 @@ public class ElevatorSubsystem {
 
 			// Process the received datagram.
 			System.out.println("Server: Packet received:");
-			System.out.println("=============");
+			
 			System.out.println("From host: " + receivePacket.getAddress());
 			System.out.println("Host port: " + receivePacket.getPort());
 			int len = receivePacket.getLength();
