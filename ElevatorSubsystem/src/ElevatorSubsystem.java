@@ -9,6 +9,9 @@ import java.io.*;
 import java.net.*;
 
 public class ElevatorSubsystem {
+	/*
+	 * jfie
+	 */
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
@@ -54,6 +57,7 @@ public class ElevatorSubsystem {
 
 			// Process the received datagram.
 			System.out.println("Server: Packet received:");
+			System.out.println("=============");
 			System.out.println("From host: " + receivePacket.getAddress());
 			System.out.println("Host port: " + receivePacket.getPort());
 			int len = receivePacket.getLength();
