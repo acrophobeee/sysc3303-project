@@ -22,7 +22,7 @@ public class FloorSubsystem {
 			// port on the local host machine. This socket will be used to
 			// send and receive UDP Datagram packets.
 			sendSocket = new DatagramSocket();
-			receiveSocket = new DatagramSocket(23);
+			receiveSocket = new DatagramSocket();
 		} catch (SocketException se) { // Can't create the socket.
 			se.printStackTrace();
 			System.exit(1);
