@@ -12,25 +12,28 @@ import java.util.*;
 
 public class FloorSubsystem {
 
-	DatagramPacket sendPacket, receivePacket;
-	DatagramSocket sendReceiveSocket;
-    
+	private DatagramPacket sendPacket, receivePacket;
+	private DatagramSocket sendSocket, receiveSocket;
+	private Date reqDate;
+	
 	public FloorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
 			// send and receive UDP Datagram packets.
-			sendReceiveSocket = new DatagramSocket();
+			sendSocket = new DatagramSocket();
+			receiveSocket = new DatagramSocket();
 		} catch (SocketException se) { // Can't create the socket.
 			se.printStackTrace();
 			System.exit(1);
 		}
 	}
 
-	public void sendAndReceive(Date date, int floor, String Button) {
-		System.out.println("Client: sending a request with \n present time: " + date + "\n mode: " + Button);
+	public void sendSocket(Date date, int floor, String Button) {
+		System.out.println("Client: sending a request with \npresent time: " + date + "\nmode: " + Button);
 
-
+		reqDate = date; //store request date
+		
 		byte But[] = Button.getBytes();
 		String floors = String.valueOf(floor);
 		byte floorByte[] = floors.getBytes();
@@ -41,8 +44,13 @@ public class FloorSubsystem {
 		System.arraycopy(But, 0, request, 0, But.length);
 		System.arraycopy(floorByte, 0, request, But.length, floorByte.length);
 		System.arraycopy(dat, 0, request, But.length+ floorByte.length, dat.length);
-
-		System.out.println(request);
+		
+		StringBuilder requestString = new StringBuilder();
+		for (byte b : request) {
+			requestString.append(b);
+		}
+		System.out.println("request: "+requestString);
+		//System.out.println(request);
 
 		try {
 			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 23);
@@ -54,7 +62,7 @@ public class FloorSubsystem {
 		// Send the datagram packet to the server via the send/receive socket.
 
 		try {
-			sendReceiveSocket.send(sendPacket);
+			sendSocket.send(sendPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -62,35 +70,46 @@ public class FloorSubsystem {
 
 		System.out.println("Client: Packet sent.\n");
 
+		// sendReceiveSocket.close();
+	}
+	
+	/*
+	 * @desc receive an socket from scheduler, socket will contain the info that which elevator will come. and which floor the elevator are
+	 * 
+	 * */
+	public void receiveSocket() {
 		// Construct a DatagramPacket for receiving packets up
 		// to 100 bytes long (the length of the byte array).
-
-		byte data[] = new byte[4];
+		System.out.println("Floor socket is running on port 23 and wait for packet: ");
+		byte data[] = new byte[100];
 		receivePacket = new DatagramPacket(data, data.length);
-
+		
 		try {
-			// Block until a datagram is received via sendReceiveSocket.
-			sendReceiveSocket.receive(receivePacket);
+			receiveSocket.receive(receivePacket);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.exit(1);
 		}
+		
+		// Process the received datagram.
+		System.out.println("Floor: Packet received:");
+		System.out.println("From host: " + receivePacket.getAddress());
+		System.out.println("Host port: " + receivePacket.getPort());
+		System.out.println("Length: " + receivePacket.getLength());
+		System.out.print("Containing: ");
 
-		System.out.println("Client: Packet received:");
-		System.out.println(new String(receivePacket.getData(), 0, receivePacket.getLength()));
 		// Form a String from the byte array.
 		StringBuilder received = new StringBuilder();
 		for (byte b : data) {
 			received.append(b);
 		}
-		System.out.println(received);
-		System.out.println("\n");
-		// We're finished, so close the socket.
-		// sendReceiveSocket.close();
+		System.out.println(received + "\n");
+		receiveSocket();
+		
 	}
 
 	public void stopClient() {
-		sendReceiveSocket.close();
+		sendSocket.close();
 	}
 
 	public static void main(String args[]) {
@@ -99,6 +118,13 @@ public class FloorSubsystem {
 		c.sendAndReceive(a, 1, "up");
 		c.sendAndReceive(a, 1, "down");
 		
+		for (int i = 0; i < 10; ++i) {
+			if (i % 2 == 0) {
+				c.sendSocket(a, 1, "up ");
+			} else {
+				c.sendSocket(a, 7 , "down ");
+			}
+		}
 		c.stopClient();
 	}
 
