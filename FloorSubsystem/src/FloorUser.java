@@ -18,10 +18,19 @@ public class FloorUser {
 	 * */
 	public  void sendRequest() {
 		FS.sendSocket(date, 1, up);
-		FS.receiveSocket();		
+		FS.sendSocket(date, 1, up);
+		
+	}
+	
+	/*
+	 * @desc this method will update the information of the request elevator 
+	 * */
+	public void updateFloorInfo() {
+		FS.receiveSocket();	
 	}
 	
 	public static void main(String args[]) {
 		FloorUser FU = new FloorUser();
+		FU.sendRequest();
 	}
 }
