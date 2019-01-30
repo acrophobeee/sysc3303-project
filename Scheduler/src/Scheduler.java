@@ -20,12 +20,11 @@ public class Scheduler {
 			// send UDP Datagram packets.
 			serverSocket = new DatagramSocket();
 
-			// Construct a datagram socket and bind it to port 5000
+			// Construct a datagram socket and bind it to port 3000
 			// on the local host machine. This socket will be used to
 			// receive UDP Datagram packets.
-			clientSocket = new DatagramSocket(23);
+			clientSocket = new DatagramSocket(3000);
 
-			// to test socket timeout (2 seconds)
 			// receiveSocket.setSoTimeout(2000);
 		} catch (SocketException se) {
 			se.printStackTrace();
@@ -33,6 +32,10 @@ public class Scheduler {
 		}
 	}
 
+	/*
+	 * @desc This method will create an method that receive request from client and schedule an elevator to client
+	 * 		 After schedule an elevator, send an packet back to the client include elevator's information
+	 * */
 	public void receiveAndEcho() {
 		while (true) {
 			// Construct a DatagramPacket for receiving packets up
@@ -78,90 +81,6 @@ public class Scheduler {
 				e.printStackTrace();
 				System.exit(1);
 			}
-
-			// ---------------------------------------
-
-			try {
-				sendPacket = new DatagramPacket(data, receivePacket.getLength(), InetAddress.getLocalHost(), 69);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-
-			System.out.println("Host: Sending packet:");
-			System.out.println("To server: " + sendPacket.getAddress());
-			System.out.println("Destination server port: " + sendPacket.getPort());
-			len = sendPacket.getLength();
-			System.out.println("Length: " + len);
-			System.out.print("Containing: ");
-			System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
-
-			// Send the datagram packet to the server via the send/receive socket.
-
-			try {
-				serverSocket.send(sendPacket);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-
-			System.out.println("Host: Packet sent.\n");
-
-			// Construct a DatagramPacket for receiving packets up
-			// to 100 bytes long (the length of the byte array).
-
-			byte data1[] = new byte[100];
-			receivePacket = new DatagramPacket(data1, data1.length);
-
-			try {
-				// Block until a datagram is received via sendReceiveSocket.
-				serverSocket.receive(receivePacket);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-
-			// Process the received datagram.
-			System.out.println("Host: Server Packet received:");
-			System.out.println("From server: " + receivePacket.getAddress());
-			System.out.println("Server port: " + receivePacket.getPort());
-			len = receivePacket.getLength();
-			System.out.println("Length: " + len);
-			System.out.print("Containing: ");
-
-			// Form a String from the byte array.
-			String received1 = new String(data1, 0, len);
-			System.out.println(received1);
-
-			// ---------------------------------------
-			// byte data1[] = data;
-			sendPacket = new DatagramPacket(data1, receivePacket.getLength(), receivePacket.getAddress(), clientPort);
-
-			System.out.println("Host: Sending packet:");
-			System.out.println("To client: " + sendPacket.getAddress());
-			System.out.println("Destination client port: " + sendPacket.getPort());
-			len = sendPacket.getLength();
-			System.out.println("Length: " + len);
-			System.out.print("Containing: ");
-			System.out.println(new String(sendPacket.getData(), 0, len));
-			StringBuilder temp2 = new StringBuilder();
-			for (byte b : sendPacket.getData()) {
-				temp2.append(b);
-			}
-			System.out.println(temp2 + "\n");
-
-			// or (as we should be sending back the same thing)
-			// System.out.println(received);
-
-			// Send the datagram packet to the client via the send socket.
-			try {
-				serverSocket.send(sendPacket);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-
-			System.out.println("Host: packet sent");
 		}
 	}
 

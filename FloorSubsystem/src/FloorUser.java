@@ -17,9 +17,7 @@ public class FloorUser {
 	 * @desc send request to the FloorSubsystem
 	 * */
 	public  void sendRequest() {
-		FS.sendSocket(date, 1, up);
-		FS.sendSocket(date, 1, up);
-		
+		FS.sendSocket(date, 1, up);		
 	}
 	
 	/*

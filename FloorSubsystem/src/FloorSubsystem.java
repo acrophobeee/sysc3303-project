@@ -53,7 +53,7 @@ public class FloorSubsystem {
 		//System.out.println(request);
 
 		try {
-			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 23);
+			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 3000);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
