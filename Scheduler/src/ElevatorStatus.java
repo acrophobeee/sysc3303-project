@@ -4,10 +4,10 @@
  * @author Xinrui Li 
  *
  */
-public class ElectvatorStatus {
+public class ElevatorStatus {
 	private int number; // the no. of elevator
 	private int port; // the port of elevator
-	private int floor; // the elevator position
+	private int floor; // the elevator's current position
 	private String state; // there are three states: idle, up, or down
 	
 	/**
@@ -16,7 +16,7 @@ public class ElectvatorStatus {
 	 * @param number The no. of elevator
 	 * @param port The port of elevator
 	 */
-	public ElectvatorStatus (int number, int port) {
+	public ElevatorStatus (int number, int port) {
 		this.number = number;
 		this.port = port;
 		floor = 1;

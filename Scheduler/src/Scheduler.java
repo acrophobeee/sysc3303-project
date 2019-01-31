@@ -10,9 +10,9 @@ import java.net.*;
 
 public class Scheduler {
 
-	DatagramPacket sendPacket, receivePacket;
-	DatagramSocket serverSocket, clientSocket;
-
+	private DatagramPacket sendPacket, receivePacket;
+	private DatagramSocket serverSocket, clientSocket;
+	private ElevatorStatus elevator;
 	public Scheduler() {
 		try {
 			// Construct a datagram socket and bind it to any available
@@ -25,7 +25,7 @@ public class Scheduler {
 			// receive UDP Datagram packets.
 			// InetAddress addr = InetAddress.getByName("172.17.198.71");
 			clientSocket = new DatagramSocket(3000);
-
+			elevator = new ElevatorStatus(1, 69);
 			// receiveSocket.setSoTimeout(2000);
 		} catch (SocketException se) {
 			se.printStackTrace();
@@ -42,7 +42,7 @@ public class Scheduler {
 			// Construct a DatagramPacket for receiving packets up
 			// to 100 bytes long (the length of the byte array).
 
-			byte data[] = new byte[18];
+			byte data[] = new byte[20];
 			receivePacket = new DatagramPacket(data, data.length);
 			System.out.println("Host: Waiting for Packet.\n");
 			try {
@@ -73,7 +73,7 @@ public class Scheduler {
 			System.out.print("Containing: ");
 
 			// Form a String from the byte array.
-			String received = new String(data, 0, len);
+			String received = new String(data, 8, len-8);
 			System.out.println(received);
 			StringBuilder temp = new StringBuilder();
 			for (byte b : data) {
@@ -89,6 +89,13 @@ public class Scheduler {
 				System.exit(1);
 			}
 		}
+	}
+	
+	/**
+	 * @desc process request from floor
+	 * */
+	public void floorRequestProcess(DatagramPacket floorPacket) {
+		
 	}
 
 	public static void main(String args[]) {
