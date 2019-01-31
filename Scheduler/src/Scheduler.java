@@ -19,10 +19,11 @@ public class Scheduler {
 			// port on the local host machine. This socket will be used to
 			// send UDP Datagram packets.
 			serverSocket = new DatagramSocket();
-
+			
 			// Construct a datagram socket and bind it to port 3000
 			// on the local host machine. This socket will be used to
 			// receive UDP Datagram packets.
+			// InetAddress addr = InetAddress.getByName("172.17.198.71");
 			clientSocket = new DatagramSocket(3000);
 
 			// receiveSocket.setSoTimeout(2000);
@@ -44,6 +45,12 @@ public class Scheduler {
 			byte data[] = new byte[33];
 			receivePacket = new DatagramPacket(data, data.length);
 			System.out.println("Host: Waiting for Packet.\n");
+			try {
+				System.out.println("Host address: " + InetAddress.getLocalHost() + "\n");
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 			// Block until a datagram packet is received from receiveSocket.
 			try {
