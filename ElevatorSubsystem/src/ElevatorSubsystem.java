@@ -11,9 +11,7 @@ import java.io.*;
 import java.net.*;
 
 public class ElevatorSubsystem {
-	/*
-	 * jfie
-	 */
+	
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
