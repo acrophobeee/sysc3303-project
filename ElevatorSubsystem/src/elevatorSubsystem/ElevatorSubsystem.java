@@ -83,7 +83,15 @@ public class ElevatorSubsystem {
 			else {
 				elevator.get().opendoor();
 			}
-			
+			while(true) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+				this.send();
+			}
 		}
 	}
 
@@ -165,14 +173,6 @@ public class ElevatorSubsystem {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		while(true) {
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		c.send();
-	}
+		
 }
 }
