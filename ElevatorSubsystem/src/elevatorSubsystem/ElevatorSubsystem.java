@@ -8,12 +8,16 @@ package elevatorSubsystem;
 
 import java.io.*;
 import java.net.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
-
+    private Elevator elevator;
+    private Date date;
 	public ElevatorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
@@ -34,11 +38,9 @@ public class ElevatorSubsystem {
 		}
 	}
 
-	public void receiveAndEcho() {
+	public void receive() throws Exception {
 		while (true) {
-			// Construct a DatagramPacket for receiving packets up
-			// to 100 bytes long (the length of the byte array).
-			byte data[] = new byte[60];
+			byte data[] = new byte[2];
 			receivePacket = new DatagramPacket(data, data.length);
 			System.out.println("Server: Waiting for Packet.\n");
 
@@ -52,7 +54,7 @@ public class ElevatorSubsystem {
 				e.printStackTrace();
 				System.exit(1);
 			}
-
+		    	
 			// Process the received datagram.
 			System.out.println("Server: Packet received:");
 			System.out.println("From host: " + receivePacket.getAddress());
@@ -60,16 +62,8 @@ public class ElevatorSubsystem {
 			int len = receivePacket.getLength();
 			System.out.println("Length: " + len);
 			System.out.print("Containing: ");
-
-			// Form a String from the byte array.
-			String received = new String(data, 0, len);
-			System.out.println(received);
-			StringBuilder temp = new StringBuilder();
-			for (byte b : receivePacket.getData()) {
-				temp.append(b);
-			}
-			System.out.println(temp + "\n");
-
+            
+			
 			// Slow things down (wait 0.5 seconds)
 			try {
 				Thread.sleep(500);
@@ -77,56 +71,108 @@ public class ElevatorSubsystem {
 				e.printStackTrace();
 				System.exit(1);
 			}
-
 			
-			byte dataBack[] = new byte[4];
-				dataBack[0] = (byte) 0;
-				dataBack[1] = (byte) 3;
-				dataBack[2] = (byte) 0;
-				dataBack[3] = (byte) 1;
+			int a = data[0]*10+data[1];
+			elevator.changemode(a);
+			if(elevator.getstate()=="up") {
+			 elevator.incrasefloor();
+			}
+			if(elevator.getstate()=="down") {
+				 elevator.decreasefloor();
+				}
+			else {
+				elevator.get().opendoor();
+			}
 			
-
-			// ----------------------------------------
-
-			sendPacket = new DatagramPacket(dataBack, dataBack.length, receivePacket.getAddress(),
-					receivePacket.getPort());
-
-			System.out.println("Server: Sending packet:");
-			System.out.println("To host: " + sendPacket.getAddress());
-			System.out.println("Destination host port: " + sendPacket.getPort());
-			len = sendPacket.getLength();
-			System.out.println("Length: " + len);
-			System.out.print("Containing: ");
-			System.out.println(new String(sendPacket.getData(), 0, len));
-			StringBuilder temp2 = new StringBuilder();
-			for (byte b : sendPacket.getData()) {
-				temp2.append(b);
-			}
-			System.out.println(temp2 + "\n");
-			// or (as we should be sending back the same thing)
-			// System.out.println(received);
-
-			// Send the datagram packet to the client via the send socket.
-			try {
-				sendSocket.send(sendPacket);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-
-			System.out.println("Server: packet sent");
-
 		}
-
 	}
 
+	public void send() throws Exception{
+		int floor = elevator.getCurrentfloor();
+		byte databack[] = new byte[50];
+		date = new Date();
+		String strDateFormat = "HH:mm:ss.mmm";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        String formattedDate= dateFormat.format(date);
+        byte time[] = formattedDate.getBytes();
+        
+        byte mode[] = new byte[2];	
+        if(elevator.getstate() == "up") {
+             mode[0] = 0 ;
+        	 mode[1] = 1 ;
+        }
+        if(elevator.getstate() == "down") {
+        	 mode[0] = 0;
+        	 mode[1] = 2;
+        }
+        else {
+        	mode[0] = 0;
+        	mode[1] = 3;
+        }
+		
+        String s = String.valueOf(floor);
+        byte f[] = s.getBytes();
+        
+        byte ele[] = new byte[2];
+        ele[0] = 0;
+        ele[1] = 1;
+        
+        System.arraycopy(ele, 0, databack, 0 , 2);
+        System.arraycopy(mode, 0, databack, 2 , 2);
+        System.arraycopy(time, 0, databack, 2 , time.length);
+        System.arraycopy(f, 0, databack, time.length+2 , f.length);
+        
+	// ----------------------------------------
+	sendPacket = new DatagramPacket(databack, databack.length, receivePacket.getAddress(),
+			receivePacket.getPort());
+
+	System.out.println("Server: Sending packet:");
+	System.out.println("To host: " + sendPacket.getAddress());
+	System.out.println("Destination host port: " + sendPacket.getPort());
+	int len = sendPacket.getLength();
+	System.out.println("Length: " + len);
+	System.out.print("Containing: ");
+	System.out.println(new String(sendPacket.getData(), 0, len));
+	StringBuilder temp2 = new StringBuilder();
+	for (byte b : sendPacket.getData()) {
+		temp2.append(b);
+	}
+	System.out.println(temp2 + "\n");
+	// or (as we should be sending back the same thing)
+	// System.out.println(received);
+
+	// Send the datagram packet to the client via the send socket.
+	try {
+		sendSocket.send(sendPacket);
+	} catch (IOException e) {
+		e.printStackTrace();
+		System.exit(1);
+	}
+
+	System.out.println("Server: packet sent");
+}
+	
 	public void stopServer() {
 		sendSocket.close();
 		receiveSocket.close();
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		ElevatorSubsystem c = new ElevatorSubsystem();
-		c.receiveAndEcho();
+		try {
+			c.receive();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while(true) {
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		c.send();
 	}
+}
 }
