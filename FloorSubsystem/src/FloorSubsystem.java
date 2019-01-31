@@ -21,18 +21,8 @@ public class FloorSubsystem {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
 			// send and receive UDP Datagram packets.
-<<<<<<< HEAD
-			
 			receiveSocket = new DatagramSocket(23);
-=======
-			sendSocket = new DatagramSocket();
-			receiveSocket = new DatagramSocket();
->>>>>>> origin/oliver
 		} catch (SocketException se) { // Can't create the socket.
-			se.printStackTrace();
-			System.exit(1);
-		}
-	}
 	
 	
 	/*
@@ -77,20 +67,6 @@ public class FloorSubsystem {
 	public static void main(String args[]) {
 	    Date a = new Date();
 		FloorSubsystem c = new FloorSubsystem();
-<<<<<<< HEAD
-=======
-		c.sendAndReceive(a, 1, "up");
-		c.sendAndReceive(a, 1, "down");
-		
-		for (int i = 0; i < 10; ++i) {
-			if (i % 2 == 0) {
-				c.sendSocket(a, 1, "up ",1);
-			} else {
-				c.sendSocket(a, 7 , "down ",1);
-			}
-		}
-		c.stopClient();
->>>>>>> origin/oliver
 	}
 
 }
