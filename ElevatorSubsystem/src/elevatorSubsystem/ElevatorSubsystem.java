@@ -13,7 +13,8 @@ public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
-
+    private Elevator elevator;
+    
 	public ElevatorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
@@ -36,6 +37,7 @@ public class ElevatorSubsystem {
 
 	public void receiveAndEcho() throws Exception {
 		while (true) {
+			
 			// Construct a DatagramPacket for receiving packets up
 			// to 100 bytes long (the length of the byte array).
 			byte data[] = new byte[60];

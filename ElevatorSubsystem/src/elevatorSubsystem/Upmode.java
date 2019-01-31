@@ -1,5 +1,29 @@
 package elevatorSubsystem;
 
-public class Upmode {
+public class Upmode implements Elevatorstate{
+
+	@Override
+	public void up() {
+		System.out.println("The elevator is moving up");
+		
+	}
+
+	@Override
+	public void down() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rest() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void opendoor() {
+		System.out.println("arrive, open door");
+		
+	}
 
 }
