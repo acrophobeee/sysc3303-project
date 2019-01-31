@@ -22,9 +22,12 @@ public class idle implements Elevatorstate{
 
 	@Override
 	public void opendoor() {
-		// TODO Auto-generated method stub
+		System.out.println("dooropen");
 		
 	}
 
+	public String toString() {
+		return "idle";
+	}
 	
 }

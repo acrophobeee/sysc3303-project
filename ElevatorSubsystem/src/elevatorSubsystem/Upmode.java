@@ -26,4 +26,7 @@ public class Upmode implements Elevatorstate{
 		
 	}
 
+	public String toString() {
+		return "up";
+	}
 }

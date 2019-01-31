@@ -25,5 +25,8 @@ public class Downmode implements Elevatorstate {
 		// TODO Auto-generated method stub
 		
 	}
-
+	public String toString() {
+		return "down";
+	}
+	
 }

@@ -1,38 +1,52 @@
 package elevatorSubsystem;
 
+import java.util.ArrayList;
+
 public class Elevator {
-	
-	private int currentfloor;
-	private Elevatorstate up = new Upmode();
-	private Elevatorstate down = new Downmode();
+	private int elenumber;
+	private int currentfloor = 1;
 	private Elevatorstate idle = new idle();
 	private Elevatorstate e;
-	
-	public Elevator(int f) {
-		this.currentfloor =f;
+	private ArrayList<Integer> floor = new ArrayList<>();
+	public Elevator() {
 		this.e = idle;
+		this.elenumber=1;
 	}
 	
-	public Elevatorstate getE() {
-		return e;
+	public String getstate() {
+		return e.toString();
 	}
 
+	public Elevatorstate get() {
+		return e;
+	}
+	
 	public void setstate(Elevatorstate state) {
-		this.e = state;
+		e = state;
 	}
 	
 	public void changemode (int requestfloor) {
 		if(requestfloor > currentfloor) {
-		 currentfloor++;
-		 e=up;	
+		 setstate(new Upmode());
 		}
 		if(requestfloor < currentfloor) {
-		 e=down;
-		 currentfloor--;
+		 setstate(new Upmode());
 		}
 		else {
-		 e=idle;
+		 setstate(new idle());
 		}
+	}
+	
+	public void incrasefloor() {
+		currentfloor++;
+	}
+	
+	public void decreasefloor() {
+		currentfloor--;
+	}
+
+	public int getCurrentfloor() {
+		return currentfloor;
 	}
     
 }
