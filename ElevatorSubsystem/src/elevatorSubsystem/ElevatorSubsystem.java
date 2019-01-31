@@ -34,7 +34,7 @@ public class ElevatorSubsystem {
 		}
 	}
 
-	public void receiveAndEcho() throws Exception {
+	public void receiveAndEcho() {
 		while (true) {
 			// Construct a DatagramPacket for receiving packets up
 			// to 100 bytes long (the length of the byte array).
@@ -127,11 +127,6 @@ public class ElevatorSubsystem {
 
 	public static void main(String args[]) {
 		ElevatorSubsystem c = new ElevatorSubsystem();
-		try {
-			c.receiveAndEcho();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		c.receiveAndEcho();
 	}
 }
