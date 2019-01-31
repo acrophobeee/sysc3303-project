@@ -167,12 +167,15 @@ public class ElevatorSubsystem {
 
 	public static void main(String args[]) throws Exception {
 		ElevatorSubsystem c = new ElevatorSubsystem();
-		try {
-			c.receive();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while (true) {
+			try {
+				c.receive();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 		
 }
 }

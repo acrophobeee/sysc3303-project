@@ -71,32 +71,11 @@ public class Scheduler {
 			StringBuilder temp = new StringBuilder();
 			for (byte b : data) {
 				temp.append(b);
-			
-			if (data[0] == (byte) 0) {
-				floorRequest(data);
-			} else if (data[0] == (byte) 1) {
-				elevatorUpdate(data);
 			}
-			
-			
-			
-			
-			
-			
-			
-//			int len = receivePacket.getLength();
-//			
-//			System.out.println("Length: " + len);
-//			System.out.print("Containing: ");
-//
-//			// Form a String from the byte array.
-//			String received = new String(data, 0, len);
-//			System.out.println(received);
-//			StringBuilder temp = new StringBuilder();
-//			for (byte b : data) {
-//				temp.append(b);
-//			}
-//			System.out.println(temp + "\n");
+			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
+				floorRequest(data);
+			} else if (data[0] == (byte) 0 && data[1] == (byte) 1) {
+				elevatorUpdate(data);
 			}
 		}
 	}
@@ -127,7 +106,7 @@ public class Scheduler {
 	}
 	
 	public void elevatorUpdate(byte data[]) {
-		
+		byte[] request = new byte[2];
 	}
 	
 	public static void main(String args[]) {
