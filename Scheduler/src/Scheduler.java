@@ -23,6 +23,7 @@ public class Scheduler {
 			// Construct a datagram socket and bind it to port 3000
 			// on the local host machine. This socket will be used to
 			// receive UDP Datagram packets.
+//			InetAddress addr = InetAddress.getByName("172.17.198.71");
 			clientSocket = new DatagramSocket(3000);
 
 			// receiveSocket.setSoTimeout(2000);
@@ -41,7 +42,7 @@ public class Scheduler {
 			// Construct a DatagramPacket for receiving packets up
 			// to 100 bytes long (the length of the byte array).
 
-			byte data[] = new byte[33];
+			byte data[] = new byte[18];
 			receivePacket = new DatagramPacket(data, data.length);
 			System.out.println("Host: Waiting for Packet.\n");
 
