@@ -8,11 +8,12 @@ public class Elevator {
 	private Elevatorstate idle = new idle();
 	private Elevatorstate e;
 	private ArrayList<Integer> floor = new ArrayList<>();
+
 	public Elevator() {
 		this.e = idle;
-		this.elenumber=1;
+		this.elenumber = 1;
 	}
-	
+
 	public String getstate() {
 		return e.toString();
 	}
@@ -20,27 +21,26 @@ public class Elevator {
 	public Elevatorstate get() {
 		return e;
 	}
-	
+
 	public void setstate(Elevatorstate state) {
 		e = state;
 	}
-	
-	public void changemode (int requestfloor) {
-		if(requestfloor > currentfloor) {
-		 setstate(new Upmode());
+
+	public void changemode(int requestfloor) {
+		if (requestfloor > currentfloor) {
+			setstate(new Upmode());
 		}
-		if(requestfloor < currentfloor) {
-		 setstate(new Upmode());
-		}
-		else {
-		 setstate(new idle());
+		if (requestfloor < currentfloor) {
+			setstate(new Upmode());
+		} else {
+			setstate(new idle());
 		}
 	}
-	
+
 	public void incrasefloor() {
 		currentfloor++;
 	}
-	
+
 	public void decreasefloor() {
 		currentfloor--;
 	}
@@ -48,5 +48,8 @@ public class Elevator {
 	public int getCurrentfloor() {
 		return currentfloor;
 	}
-    
+
+	public int getElenumber() {
+		return elenumber;
+	}
 }
