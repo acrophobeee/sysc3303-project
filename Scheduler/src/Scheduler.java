@@ -1,6 +1,5 @@
 
 // SimpleEchoServer.java
-//ji
 // This class is the server side of a simple echo server based on
 // UDP/IP. The server receives from a client a packet containing a character
 // string, then echoes the string back to the client.
