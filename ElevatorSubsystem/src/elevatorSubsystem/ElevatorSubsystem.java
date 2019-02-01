@@ -109,8 +109,9 @@ public class ElevatorSubsystem {
 	        	mode[1] = 3;
 	        }
 			
-	        String s = String.valueOf(floor);
-	        byte f[] = s.getBytes();
+	        byte[] f = new byte[2];
+	        f[0] = (byte) (elevator.getCurrentfloor()/10);
+	        f[1] = (byte) (elevator.getCurrentfloor()%10);
 	        
 	        byte direction[] = new byte[2];
 	        direction[0] = 0;

@@ -107,8 +107,18 @@ public class Scheduler {
 	}
 	
 	public void elevatorUpdate(byte data[]) {
-		
-		
+		byte[] elevatorNum = new byte[2];
+		byte[] mode = new byte[2];
+		byte[] floor = new byte[2];
+		elevatorNum[0] = data[2];
+		elevatorNum[1] = data[3];
+		mode[0] = data[4];
+		mode[1] = data[5];
+		floor[0] = data[6];
+		floor[1] = data[7];
+		System.out.println("the elevator number is :" + byteToInt(elevatorNum));
+		System.out.println("the mode is :" + byteToInt(mode));
+		System.out.println("the floor is :" + byteToInt(floor));
 		
 		try {
 			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
@@ -129,7 +139,7 @@ public class Scheduler {
 	
 	public int byteToInt(byte data[]) {
 		int result = 0;
-		result = data[0];
+		result = data[0] * 10 + data[1];
 		return result;
 	}
 	
