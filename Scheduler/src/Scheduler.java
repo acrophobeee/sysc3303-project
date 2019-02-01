@@ -72,6 +72,7 @@ public class Scheduler {
 			for (byte b : data) {
 				temp.append(b);
 			}
+			System.out.println(temp);
 			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
 				floorRequest(data);
 			} else if (data[0] == (byte) 0 && data[1] == (byte) 1) {
@@ -110,7 +111,7 @@ public class Scheduler {
 		
 		
 		try {
-			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 69);
+			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -124,6 +125,12 @@ public class Scheduler {
 		}
 
 		System.out.println("Scheduler: Status sent.\n");
+	}
+	
+	public int byteToInt(byte data[]) {
+		int result = 0;
+		result = data[0];
+		return result;
 	}
 	
 	public static void main(String args[]) {
