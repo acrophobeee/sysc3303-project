@@ -71,32 +71,12 @@ public class Scheduler {
 			StringBuilder temp = new StringBuilder();
 			for (byte b : data) {
 				temp.append(b);
-			
-			if (data[0] == (byte) 0) {
-				floorRequest(data);
-			} else if (data[0] == (byte) 1) {
-				elevatorUpdate(data);
 			}
-			
-			
-			
-			
-			
-			
-			
-//			int len = receivePacket.getLength();
-//			
-//			System.out.println("Length: " + len);
-//			System.out.print("Containing: ");
-//
-//			// Form a String from the byte array.
-//			String received = new String(data, 0, len);
-//			System.out.println(received);
-//			StringBuilder temp = new StringBuilder();
-//			for (byte b : data) {
-//				temp.append(b);
-//			}
-//			System.out.println(temp + "\n");
+			System.out.println(temp);
+			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
+				floorRequest(data);
+			} else if (data[0] == (byte) 0 && data[1] == (byte) 1) {
+				elevatorUpdate(data);
 			}
 		}
 	}
@@ -123,11 +103,44 @@ public class Scheduler {
 			System.exit(1);
 		}
 
-		System.out.println("Client: Packet sent.\n");
+		System.out.println("Scheduler: Order sent.\n");
 	}
 	
 	public void elevatorUpdate(byte data[]) {
+		byte[] elevatorNum = new byte[2];
+		byte[] mode = new byte[2];
+		byte[] floor = new byte[2];
+		elevatorNum[0] = data[2];
+		elevatorNum[1] = data[3];
+		mode[0] = data[4];
+		mode[1] = data[5];
+		floor[0] = data[6];
+		floor[1] = data[7];
+		System.out.println("the elevator number is :" + byteToInt(elevatorNum));
+		System.out.println("the mode is :" + byteToInt(mode));
+		System.out.println("the floor is :" + byteToInt(floor));
 		
+		try {
+			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		try {
+			schedulerSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("Scheduler: Status sent.\n");
+	}
+	
+	public int byteToInt(byte data[]) {
+		int result = 0;
+		result = data[0] * 10 + data[1];
+		return result;
 	}
 	
 	public static void main(String args[]) {
