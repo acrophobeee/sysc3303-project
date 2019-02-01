@@ -83,15 +83,7 @@ public class ElevatorSubsystem {
 			else {
 				elevator.get().opendoor();
 			}
-			while(true) {
-				try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					System.exit(1);
-				}
-				this.send();
-			}
+			
 		}
 	}
 
@@ -103,6 +95,9 @@ public class ElevatorSubsystem {
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate= dateFormat.format(date);
         byte time[] = formattedDate.getBytes();
+        int i= elevator.getElenumber();
+        String elenum = String.valueOf(i);
+        byte ele[] = elenum.getBytes();
         
         byte mode[] = new byte[2];	
         if(elevator.getstate() == "up") {
@@ -121,14 +116,16 @@ public class ElevatorSubsystem {
         String s = String.valueOf(floor);
         byte f[] = s.getBytes();
         
-        byte ele[] = new byte[2];
-        ele[0] = 0;
-        ele[1] = 1;
+        byte direction[] = new byte[2];
+        direction[0] = 0;
+        direction[1] = 1;
         
-        System.arraycopy(ele, 0, databack, 0 , 2);
-        System.arraycopy(mode, 0, databack, 2 , 2);
-        System.arraycopy(time, 0, databack, 2 , time.length);
-        System.arraycopy(f, 0, databack, time.length+2 , f.length);
+        System.arraycopy(direction, 0, databack, 0 , 2);
+        System.arraycopy(ele, 0, databack, 2 , 2);
+        System.arraycopy(mode, 0, databack, 4 , 2);
+        System.arraycopy(f, 0, databack, 6 , f.length);
+        System.arraycopy(time, 0, databack, 8 , time.length);
+       
         
 	// ----------------------------------------
 	sendPacket = new DatagramPacket(databack, databack.length, receivePacket.getAddress(),
@@ -170,6 +167,15 @@ public class ElevatorSubsystem {
 		while(true) {
 		try {
 			c.receive();
+			while(true) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			c.send();
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
