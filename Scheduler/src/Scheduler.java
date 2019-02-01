@@ -102,11 +102,28 @@ public class Scheduler {
 			System.exit(1);
 		}
 
-		System.out.println("Client: Packet sent.\n");
+		System.out.println("Scheduler: Order sent.\n");
 	}
 	
 	public void elevatorUpdate(byte data[]) {
-		byte[] request = new byte[2];
+		
+		
+		
+		try {
+			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 69);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		try {
+			schedulerSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("Scheduler: Status sent.\n");
 	}
 	
 	public static void main(String args[]) {
