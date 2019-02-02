@@ -76,7 +76,10 @@ public class FloorSubsystem {
 		sendSocket.close();
 	}
 	
-	
+	/**
+	 * @desc main
+	 * @param args
+	 */
 	public static void main(String args[]) {
 	    Date a = new Date();
 		FloorSubsystem c = new FloorSubsystem();

@@ -17,6 +17,9 @@ public class FloorUser {
 	private DatagramSocket sendSocket;
 	private DatagramPacket sendPacket;
 	
+	/**
+	 * @desc construct a floor user
+	 * */
 	public FloorUser() {
 		FS = new FloorSubsystem();
 		
@@ -30,7 +33,7 @@ public class FloorUser {
 		}
 	}
 	
-	/*
+	/**
 	 * @desc send request to the FloorSubsystem
 	 * */
 	public  void sendRequest() {
@@ -112,14 +115,15 @@ public class FloorUser {
 		System.out.println("Client: Packet sent.\n");
 	}
 	
-	/*
+	/**
 	 * @desc this method will update the information of the request elevator 
 	 * */
 	public void updateFloorInfo() {
 		FS.receiveSocket();	
 	}
 	
-	/*
+	/**
+	 * @desc main
 	 * */
 	public static void main(String args[]) {
 		FloorUser FU = new FloorUser();
