@@ -16,6 +16,10 @@ public class FloorSubsystem {
 	private DatagramSocket sendSocket, receiveSocket;
 	private Date reqDate;
 	
+	/**
+	 * @desc Construct a floor subsystem
+	 * 
+	 */
 	public FloorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
@@ -30,9 +34,10 @@ public class FloorSubsystem {
 	}
 	
 	
-	/*
-	 * @desc receive an socket from scheduler, socket will contain the info that which elevator will come. and which floor the elevator are
-	 * 
+	/**
+	 * @desc receive an socket from scheduler, 
+	 * socket will contain the info that which elevator will come. 
+	 * and which floor the elevator are
 	 * */
 	public void receiveSocket() {
 		// Construct a DatagramPacket for receiving packets up
@@ -64,11 +69,14 @@ public class FloorSubsystem {
 		receiveSocket();
 		
 	}
-
+	/**
+	 * @desc terminate the client socket
+	 * */
 	public void stopClient() {
 		sendSocket.close();
 	}
-
+	
+	
 	public static void main(String args[]) {
 	    Date a = new Date();
 		FloorSubsystem c = new FloorSubsystem();
