@@ -12,7 +12,7 @@ public class Scheduler {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket schedulerSocket;
-	ElevatorStatus e;
+	private ElevatorStatus e;
 
 	public Scheduler() {
 		try {
