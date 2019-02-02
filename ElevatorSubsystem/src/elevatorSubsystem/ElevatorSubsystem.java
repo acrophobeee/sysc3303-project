@@ -102,11 +102,11 @@ public class ElevatorSubsystem {
 	             mode[0] = 0 ;
 	        	 mode[1] = 1 ;
 	        }
-	        if(elevator.getstate() == "down") {
+	        else if(elevator.getstate() == "down") {
 	        	 mode[0] = 0;
 	        	 mode[1] = 2;
 	        }
-	        else {
+	        else if (elevator.getstate() == "idle") {
 	        	mode[0] = 0;
 	        	mode[1] = 3;
 	        }
