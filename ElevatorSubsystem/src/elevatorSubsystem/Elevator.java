@@ -27,35 +27,37 @@ public class Elevator {
 	}
 
 	public void changemode() {
-		if (floor.get(0)!=currentfloor) {
-		    if (floor.get(0) > currentfloor) {
-			setstate(new Upmode());
-			incrasefloor();
-		}
-		    else if (floor.get(0) < currentfloor) {
-			setstate(new Downmode());
-			decreasefloor();
-		}   
-		    else{
-				setstate(new idle());}
-	}
-		else {  floor.remove(0);
+		if (floor.get(0) != currentfloor) {
+			if (floor.get(0) > currentfloor) {
+				setstate(new Upmode());
+				incrasefloor();
+			} else if (floor.get(0) < currentfloor) {
+				setstate(new Downmode());
+				decreasefloor();
+			} else {
+				setstate(new idle());
+			}
+		} else {
+			floor.remove(0);
+			if (floor.isEmpty()) {
+				setstate(new idle());
+			} else {
 				if (floor.get(0) > currentfloor) {
 					setstate(new Upmode());
 					incrasefloor();
-				}
-				else if (floor.get(0) < currentfloor) {
+				} else if (floor.get(0) < currentfloor) {
 					setstate(new Downmode());
-					decreasefloor();	
+					decreasefloor();
 				}
-			    else{
-					setstate(new idle());}
-			    }
-     	
-}	
-    public void add(int requestfloor) {
-       floor.add(requestfloor);	
-    }
+			}
+		}
+
+	}
+
+	public void add(int requestfloor) {
+		floor.add(requestfloor);
+	}
+
 	public void incrasefloor() {
 		currentfloor++;
 	}
@@ -71,7 +73,7 @@ public class Elevator {
 	public int getElenumber() {
 		return elenumber;
 	}
-	
+
 	public boolean commandClear() {
 		if (floor.isEmpty()) {
 			return true;
