@@ -73,11 +73,13 @@ public class ElevatorSubsystem {
 			}
 			
 			int a = data[0]*10+data[1];
+			System.out.print(a);
 			elevator.changemode(a);
+			System.out.print(elevator.getstate());
 			if(elevator.getstate()=="up") {
 			 elevator.incrasefloor();
 			}
-			if(elevator.getstate()=="down") {
+			else if(elevator.getstate()=="down") {
 				 elevator.decreasefloor();
 				}
 			else {
@@ -100,17 +102,18 @@ public class ElevatorSubsystem {
 	             mode[0] = 0 ;
 	        	 mode[1] = 1 ;
 	        }
-	        if(elevator.getstate() == "down") {
+	        else if(elevator.getstate() == "down") {
 	        	 mode[0] = 0;
 	        	 mode[1] = 2;
 	        }
-	        else {
+	        else if (elevator.getstate() == "idle") {
 	        	mode[0] = 0;
 	        	mode[1] = 3;
 	        }
 			
-	        String s = String.valueOf(floor);
-	        byte f[] = s.getBytes();
+	        byte[] f = new byte[2];
+	        f[0] = (byte) (elevator.getCurrentfloor()/10);
+	        f[1] = (byte) (elevator.getCurrentfloor()%10);
 	        
 	        byte direction[] = new byte[2];
 	        direction[0] = 0;

@@ -30,10 +30,11 @@ public class Elevator {
 		if (requestfloor > currentfloor) {
 			setstate(new Upmode());
 		}
-		if (requestfloor < currentfloor) {
+		else if (requestfloor < currentfloor) {
 			setstate(new Upmode());
-		} else {
+		} else if (requestfloor == currentfloor){
 			setstate(new idle());
+			System.out.println("+++++++++++++++++++++++++++++++++");
 		}
 	}
 
