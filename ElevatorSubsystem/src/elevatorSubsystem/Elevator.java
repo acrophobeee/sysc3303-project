@@ -29,11 +29,12 @@ public class Elevator {
 	public void changemode(int requestfloor) {
 		if (requestfloor > currentfloor) {
 			setstate(new Upmode());
-		}
-		if (requestfloor < currentfloor) {
+			System.out.println("------------------------------------");
+		} else if (requestfloor < currentfloor) {
 			setstate(new Upmode());
 		} else {
 			setstate(new idle());
+			System.out.println("+++++++++++++++++++++++++++++++++");
 		}
 	}
 

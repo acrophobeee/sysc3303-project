@@ -73,11 +73,13 @@ public class ElevatorSubsystem {
 			}
 			
 			int a = data[0]*10+data[1];
+			System.out.print(a);
 			elevator.changemode(a);
+			System.out.print(elevator.getstate());
 			if(elevator.getstate()=="up") {
 			 elevator.incrasefloor();
 			}
-			if(elevator.getstate()=="down") {
+			else if(elevator.getstate()=="down") {
 				 elevator.decreasefloor();
 				}
 			else {
