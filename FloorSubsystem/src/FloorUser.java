@@ -40,9 +40,7 @@ public class FloorUser {
         String formattedDate= dateFormat.format(date);
         
 
-		sendSocket(formattedDate, 4, up, 1);		
-		
-
+		sendSocket(formattedDate, 10, up, 5);
 	}
 	
 	/**

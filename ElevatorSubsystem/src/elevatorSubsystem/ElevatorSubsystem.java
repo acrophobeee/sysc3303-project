@@ -16,8 +16,8 @@ public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
-	private boolean finished;
-    private Elevator elevator;
+	
+    public Elevator elevator;
     private Date date;
 	public ElevatorSubsystem() {
 		try {
@@ -83,7 +83,7 @@ public class ElevatorSubsystem {
 			
 			System.out.println(elevator.getstate());
 			
-			int floor = elevator.getCurrentfloor();
+			
 			byte databack[] = new byte[50];
 			date = new Date();
 			String strDateFormat = "HH:mm:ss.mmm";
