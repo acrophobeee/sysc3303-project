@@ -109,6 +109,10 @@ public class Scheduler {
 		System.out.println("Scheduler: Order sent.\n");
 	}
 	
+	/**
+	 * @desc send elevator's information to scheduler.
+	 * @param an array of bytes.
+	 * */
 	public void elevatorUpdate(byte data[]) {
 		byte[] elevatorNum = new byte[2];
 		byte[] mode = new byte[2];
@@ -142,12 +146,24 @@ public class Scheduler {
 		System.out.println("Scheduler: Status sent.\n");
 	}
 	
+	
+	/**
+	 * @desc convert bytes to integer.
+	 * @param an array o bytes
+	 * @return converted integer
+	 * */
 	public int byteToInt(byte data[]) {
 		int result = 0;
 		result = data[0] * 10 + data[1];
 		return result;
 	}
 	
+	
+	/**
+	 * @desc determine the elevator's status.
+	 * @param an array of bytes
+	 * @return "up" or "down" or "idle"
+	 * */
 	public String decodeState(byte data[]) {
 		int temp = byteToInt(data);
 		if (temp == 1) {
@@ -159,6 +175,7 @@ public class Scheduler {
 		}
 		return "unknown";
 	}
+	
 	
 	public static void main(String args[]) {
 		Scheduler c = new Scheduler();
