@@ -1,7 +1,5 @@
 /**
  * This class is used to store the status of the elevators.
- * 
- * @author Xinrui Li 
  *
  */
 public class ElevatorStatus {
@@ -95,5 +93,10 @@ public class ElevatorStatus {
 		if (state.equals("idle") || state.equals("up") || state.equals("down")) {
 			this.state = state;
 		}
+	}
+	
+	public void statusUpdate(int floor, String state) {
+		setFloor(floor);
+		setState(state);
 	}
 }

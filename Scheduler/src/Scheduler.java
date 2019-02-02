@@ -12,7 +12,7 @@ public class Scheduler {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket schedulerSocket;
-	ElevatorStatus e;
+	private ElevatorStatus e;
 
 	public Scheduler() {
 		try {
@@ -24,6 +24,7 @@ public class Scheduler {
 			se.printStackTrace();
 			System.exit(1);
 		}
+		e = new ElevatorStatus(1, 69);
 	}
 
 	/**
@@ -86,9 +87,11 @@ public class Scheduler {
 	 * @param floor's data
 	 * */
 	public void floorRequest(byte data[]) {
-		byte[] request = new byte[2];
+		byte[] request = new byte[4];
 		request[0] = data[4];
 		request[1] = data[5];
+		request[2] = data[6];
+		request[3] = data[7];
 		try {
 			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 69);
 		} catch (UnknownHostException e) {
@@ -116,8 +119,10 @@ public class Scheduler {
 		mode[1] = data[5];
 		floor[0] = data[6];
 		floor[1] = data[7];
+		String state = decodeState(mode);
+		e.statusUpdate(byteToInt(floor), state);
 		System.out.println("the elevator number is :" + byteToInt(elevatorNum));
-		System.out.println("the mode is :" + byteToInt(mode));
+		System.out.println("the mode is :" + state);
 		System.out.println("the floor is :" + byteToInt(floor));
 		
 		try {
@@ -141,6 +146,18 @@ public class Scheduler {
 		int result = 0;
 		result = data[0] * 10 + data[1];
 		return result;
+	}
+	
+	public String decodeState(byte data[]) {
+		int temp = byteToInt(data);
+		if (temp == 1) {
+			return "up";
+		} else if (temp == 2) {
+			return "down";
+		} else if (temp == 3) {
+			return "idle";
+		}
+		return "unknown";
 	}
 	
 	public static void main(String args[]) {
