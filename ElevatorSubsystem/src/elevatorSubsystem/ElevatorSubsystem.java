@@ -16,6 +16,7 @@ public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
+	private boolean finished;
     private Elevator elevator;
     private Date date;
 	public ElevatorSubsystem() {
@@ -40,7 +41,7 @@ public class ElevatorSubsystem {
 
 	public void receive() throws Exception {
 		while (true) {
-			byte data[] = new byte[2];
+			byte data[] = new byte[4];
 			receivePacket = new DatagramPacket(data, data.length);
 			System.out.println("Server: Waiting for Packet.\n");
 
@@ -73,18 +74,15 @@ public class ElevatorSubsystem {
 			}
 			
 			int a = data[0]*10+data[1];
-			System.out.print(a);
-			elevator.changemode(a);
-			System.out.print(elevator.getstate());
-			if(elevator.getstate()=="up") {
-			 elevator.incrasefloor();
-			}
-			else if(elevator.getstate()=="down") {
-				 elevator.decreasefloor();
-				}
-			else {
-				elevator.get().opendoor();
-			}
+			int b = data[2]*10+data[3];
+			
+			elevator.add(a);
+			elevator.add(b);
+			
+			elevator.changemode();
+			
+			System.out.println(elevator.getstate());
+			
 			int floor = elevator.getCurrentfloor();
 			byte databack[] = new byte[50];
 			date = new Date();
@@ -143,8 +141,8 @@ public class ElevatorSubsystem {
 		System.out.print("Containing: ");
 		System.out.println(new String(sendPacket.getData(), 0, len));
 		StringBuilder temp2 = new StringBuilder();
-		for (byte b : sendPacket.getData()) {
-			temp2.append(b);
+		for (byte bb : sendPacket.getData()) {
+			temp2.append(bb);
 		}
 		System.out.println(temp2 + "\n");
 		// or (as we should be sending back the same thing)
@@ -173,7 +171,6 @@ public class ElevatorSubsystem {
 		while(true) {
 		try {
 			c.receive();
-			
 			}
 		 catch (Exception e) {
 			// TODO Auto-generated catch block
