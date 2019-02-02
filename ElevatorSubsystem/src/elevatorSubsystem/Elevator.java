@@ -71,4 +71,11 @@ public class Elevator {
 	public int getElenumber() {
 		return elenumber;
 	}
+	
+	public boolean commandClear() {
+		if (floor.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
 }
