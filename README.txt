@@ -6,7 +6,7 @@ Xinyu Chen            101031031
 Tongdan Zhu         101057752
 Lixuan Luo              101019254
 
-Instruction
+Running Instructions:
 1. First run ElevatorSubsystem.java
 //This class is the server side of a simple echo server based on UDP/IP.
 // The server receives from a client a packet containing a character
@@ -23,10 +23,27 @@ Instruction
 //This class is the client side of a simple echo server based on UDP/IP.
 //The client sents a package to server containing a requeat and date.
 
-Port
+Files included:
+1)ElevatorSubsystem.java
+2)Elevator.java
+3)ElevatorSubsystem.java
+4)idle.java
+5)Downmode.java
+6)Upmode.java
+
+7)Scheduler.java
+8)ElevatorStatus.java
+
+9)FloorSubsystem.java
+10)FloorUser.java
+11)TextFile.java
+
+
+Port:	
 	PORT 23: Bond to floor's receive Socket
 	PORT 3000: Bond to scheduler's receive Socket
-Data Format
+
+Data Format:
 	Packet send from Floor: 
 		byte 0-1: 00=user, 01=elevator-1
 		byte 2-3: 00=up, 01=down
