@@ -30,7 +30,7 @@ public class Elevator {
 		if (floor.get(0) != currentfloor) {
 			if (floor.get(0) > currentfloor) {
 				setstate(new Upmode());
-				incrasefloor();
+				increasefloor();
 			} else if (floor.get(0) < currentfloor) {
 				setstate(new Downmode());
 				decreasefloor();
@@ -44,7 +44,7 @@ public class Elevator {
 			} else {
 				if (floor.get(0) > currentfloor) {
 					setstate(new Upmode());
-					incrasefloor();
+					increasefloor();
 				} else if (floor.get(0) < currentfloor) {
 					setstate(new Downmode());
 					decreasefloor();
@@ -58,7 +58,7 @@ public class Elevator {
 		floor.add(requestfloor);
 	}
 
-	public void incrasefloor() {
+	public void increasefloor() {
 		currentfloor++;
 	}
 

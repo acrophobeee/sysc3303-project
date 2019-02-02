@@ -64,7 +64,7 @@ public class Scheduler {
 			System.out.println("Host port: " + receivePacket.getPort());
 			int len = receivePacket.getLength();
 			System.out.println("Length: " + len);
-			System.out.print("Containing: ");
+			System.out.print("Processing Time: ");
 
 			// Form a String from the byte array.
 			String received = new String(data, 8, len-8);

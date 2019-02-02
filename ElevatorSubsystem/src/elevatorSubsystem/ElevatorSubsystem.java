@@ -64,6 +64,10 @@ public class ElevatorSubsystem {
 			int len = receivePacket.getLength();
 			System.out.println("Length: " + len);
 			System.out.print("Containing: ");
+			for(int i:data) {
+				System.out.print(i + " ");
+			}
+			System.out.println();
 
 			// Slow things down (wait 0.5 seconds)
 			try {
@@ -86,11 +90,22 @@ public class ElevatorSubsystem {
 
 				int floor = elevator.getCurrentfloor();
 				byte databack[] = new byte[50];
+				
 				date = new Date();
 				String strDateFormat = "HH:mm:ss.mmm";
 				DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 				String formattedDate = dateFormat.format(date);
 				byte time[] = formattedDate.getBytes();
+				
+				String[] splittedDate = formattedDate.split(":");
+				for(String s:splittedDate) {
+					System.out.println(s);
+				}
+				
+				String[] splittedSecond = splittedDate[2].split("\\.");
+				for(String s:splittedSecond) {
+					System.out.println("second: "+s);
+				}
 
 				byte ele[] = new byte[2];
 				ele[0] = 0;
@@ -132,8 +147,8 @@ public class ElevatorSubsystem {
 				System.out.println("To host: " + sendPacket.getAddress());
 				System.out.println("Destination host port: " + sendPacket.getPort());
 
-				System.out.print("Containing: ");
-				System.out.println(new String(sendPacket.getData(), 0, len));
+				System.out.println("Containing: ");
+				
 				StringBuilder temp2 = new StringBuilder();
 				for (byte bb : sendPacket.getData()) {
 					temp2.append(bb);

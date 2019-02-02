@@ -39,7 +39,7 @@ public class FloorUser {
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate= dateFormat.format(date);
         
-		sendSocket(formattedDate, 10, up, 5);
+		sendSocket(formattedDate, 3, up, 5);
 	}
 	
 	/**
@@ -49,11 +49,11 @@ public class FloorUser {
 	 * @param Button up/down button
 	 * @param curr user's current floor
 	 * */
-	public void sendSocket(String date, int floor, String Button, int curr) {
+	public void sendSocket(String date, int curr, String Button, int destination) {
 		System.out.println("Client: sending a request with \npresent time: " + date + "\nmode: " + Button);
 		
 		byte But[] = Button.getBytes();
-		String floors = String.valueOf(floor);
+		String floors = String.valueOf(destination);
 		byte floorByte[] = floors.getBytes();
         String d = date.toString();
         byte dat[] = d.getBytes();
@@ -70,22 +70,23 @@ public class FloorUser {
 			request[2]=0;
 			request[3]=1;
 		}
-		// floor info
-		if(floor<10) {
-			request[4]=0;
-			request[5]=(byte) floor;
-		}else {
-			request[4]=(byte) (floor/10);
-			request[5]=(byte) (floor%10);
-		}
-		// cart info
+		// user's current floor
 		if(curr<10) {
-			request[6]=0;
-			request[7]=(byte) curr;
+			request[4]=0;
+			request[5]=(byte) curr;
 		}else {
-			request[6]=(byte) (curr/10);
-			request[7]=(byte) (curr%10);
+			request[4]=(byte) (curr/10);
+			request[5]=(byte) (curr%10);
 		}
+		// destination floor info
+		if(destination<10) {
+			request[6]=0;
+			request[7]=(byte) destination;
+		}else {
+			request[6]=(byte) (destination/10);
+			request[7]=(byte) (destination%10);
+		}
+		
 		System.arraycopy(dat, 0, request, 8, dat.length);
 		
 		StringBuilder requestString = new StringBuilder();
