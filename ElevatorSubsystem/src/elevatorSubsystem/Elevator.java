@@ -26,22 +26,36 @@ public class Elevator {
 		e = state;
 	}
 
-	public void add(int requestfloor) {
-		floor.add(requestfloor);
-	}
-	
-	public void changemode(int requestfloor) {
-		if (requestfloor > currentfloor) {
+	public void changemode() {
+		if (floor.get(0)!=currentfloor) {
+		    if (floor.get(0) > currentfloor) {
 			setstate(new Upmode());
+			incrasefloor();
 		}
-		else if (requestfloor < currentfloor) {
-			setstate(new Upmode());
-		} 
-		else if (requestfloor == currentfloor){
-			setstate(new idle());
-		}
+		    else if (floor.get(0) < currentfloor) {
+			setstate(new Downmode());
+			decreasefloor();
+		}   
+		    else{
+				setstate(new idle());}
 	}
-
+		else {  floor.remove(0);
+				if (floor.get(0) > currentfloor) {
+					setstate(new Upmode());
+					incrasefloor();
+				}
+				else if (floor.get(0) < currentfloor) {
+					setstate(new Downmode());
+					decreasefloor();	
+				}
+			    else{
+					setstate(new idle());}
+			    }
+     	
+}	
+    public void add(int requestfloor) {
+       floor.add(requestfloor);	
+    }
 	public void incrasefloor() {
 		currentfloor++;
 	}
