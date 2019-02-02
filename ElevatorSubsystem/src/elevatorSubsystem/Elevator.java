@@ -26,13 +26,18 @@ public class Elevator {
 		e = state;
 	}
 
+	public void add(int requestfloor) {
+		floor.add(requestfloor);
+	}
+	
 	public void changemode(int requestfloor) {
 		if (requestfloor > currentfloor) {
 			setstate(new Upmode());
 		}
 		else if (requestfloor < currentfloor) {
 			setstate(new Upmode());
-		} else if (requestfloor == currentfloor){
+		} 
+		else if (requestfloor == currentfloor){
 			setstate(new idle());
 		}
 	}
