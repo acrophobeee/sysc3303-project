@@ -16,10 +16,9 @@ public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
-	private boolean finished;
-	private Elevator elevator;
-	private Date date;
-
+	
+    public Elevator elevator;
+    private Date date;
 	public ElevatorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
