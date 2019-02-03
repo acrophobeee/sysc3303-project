@@ -16,13 +16,17 @@ public class FloorSubsystem {
 	private DatagramSocket sendSocket, receiveSocket;
 	private Date reqDate;
 	
+	/**
+	 * @desc Construct a floor subsystem
+	 * 
+	 */
 	public FloorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
 			// send and receive UDP Datagram packets.
 			
-			receiveSocket = new DatagramSocket(23);
+			receiveSocket = new DatagramSocket(23);//receive port is 23
 		} catch (SocketException se) { // Can't create the socket.
 			se.printStackTrace();
 			System.exit(1);
@@ -30,9 +34,10 @@ public class FloorSubsystem {
 	}
 	
 	
-	/*
-	 * @desc receive an socket from scheduler, socket will contain the info that which elevator will come. and which floor the elevator are
-	 * 
+	/**
+	 * @desc receive an socket from scheduler, 
+	 * socket will contain the info that which elevator will come. 
+	 * and which floor the elevator are
 	 * */
 	public void receiveSocket() {
 		// Construct a DatagramPacket for receiving packets up
@@ -64,11 +69,17 @@ public class FloorSubsystem {
 		receiveSocket();
 		
 	}
-
+	/**
+	 * @desc terminate the client socket
+	 * */
 	public void stopClient() {
 		sendSocket.close();
 	}
-
+	
+	/**
+	 * @desc main
+	 * @param args
+	 */
 	public static void main(String args[]) {
 	    Date a = new Date();
 		FloorSubsystem c = new FloorSubsystem();
