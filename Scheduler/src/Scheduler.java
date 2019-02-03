@@ -85,6 +85,7 @@ public class Scheduler {
 	/**
 	 * @desc process floor's request
 	 * @param floor's data
+	 * @param received time from floor
 	 * */
 	public void floorRequest(byte data[], String received) {
 		byte[] dataSend = new byte[16];
@@ -116,8 +117,9 @@ public class Scheduler {
 	/**
 	 * @desc send elevator's information to scheduler.
 	 * @param an array of bytes.
+	 * @param received time from elevator
 	 * */
-	public void elevatorUpdate(byte data[]) {
+	public void elevatorUpdate(byte data[], String received) {
 		byte[] elevatorNum = new byte[2];
 		byte[] mode = new byte[2];
 		byte[] floor = new byte[2];
