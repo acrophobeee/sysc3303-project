@@ -42,7 +42,7 @@ public class ElevatorSubsystem {
 
 	public void receive() throws Exception {
 		while (true) {
-			byte data[] = new byte[4];
+			byte data[] = new byte[16];
 			receivePacket = new DatagramPacket(data, data.length);
 			System.out.println("Server: Waiting for Packet.\n");
 
@@ -64,10 +64,23 @@ public class ElevatorSubsystem {
 			int len = receivePacket.getLength();
 			System.out.println("Length: " + len);
 			System.out.print("Containing: ");
-			for(int i:data) {
-				System.out.print(i + " ");
+			
+			String received = new String(data, 4, len-4);
+			System.out.println(received);
+			StringBuilder temp = new StringBuilder();
+			for (byte b : data) {
+				temp.append(b);
 			}
-			System.out.println();
+			
+			String hour, mins, second;			
+			String[] splittedDate = received.split(":");			
+			String[] splittedSecond = splittedDate[2].split("\\.");
+			
+			hour = splittedDate[0];
+			mins = splittedDate[1];
+			second = splittedSecond[0];
+			
+			System.out.println("hour: " + hour + " mins: " + mins + " second: " + second);
 
 			// Slow things down (wait 0.5 seconds)
 			try {
@@ -82,6 +95,11 @@ public class ElevatorSubsystem {
 
 			elevator.add(a);
 			elevator.add(b);
+			
+			int resH, resM, resS;
+			resH = Integer.parseInt(hour);
+			resM = Integer.parseInt(mins);
+			resS = Integer.parseInt(second);
 
 			while (!elevator.commandClear()) {
 				elevator.changemode();
@@ -91,21 +109,25 @@ public class ElevatorSubsystem {
 				int floor = elevator.getCurrentfloor();
 				byte databack[] = new byte[50];
 				
+				resS += 2;
+				if(resS/60!=0) {
+					resS = resS%60;
+					resM += 1;
+					if(resM/60!=0) {
+						resM= resM%60;
+						resH += 1;
+						if(resH==25) {
+							resH=00;
+						}
+					}
+				}
+				
 				date = new Date();
 				String strDateFormat = "HH:mm:ss.mmm";
 				DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-				String formattedDate = dateFormat.format(date);
-				byte time[] = formattedDate.getBytes();
-				
-				String[] splittedDate = formattedDate.split(":");
-				for(String s:splittedDate) {
-					System.out.println(s);
-				}
-				
-				String[] splittedSecond = splittedDate[2].split("\\.");
-				for(String s:splittedSecond) {
-					System.out.println("second: "+s);
-				}
+				String formattedDate = resH+":"+resM+":"+resS+".000";
+//				String formattedDate = dateFormat.format(date);
+				byte time[] = formattedDate.getBytes();		
 
 				byte ele[] = new byte[2];
 				ele[0] = 0;

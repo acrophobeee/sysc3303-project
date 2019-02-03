@@ -34,9 +34,13 @@ Data Format
 		byte 6-7: 01=floor 1, 02=floor 2, ...(destination)		
 		byte 8-35: current time
 		
-	Packet from elevator:
+	Packet send from elevator to scheduler:
         byte 0-1: 01 sent to scheduler 
 		byte 2-3: elevator number (01=elevator-1)
 		byte 4-5: elevator currern mode (01 up , 02 down , 03 idle)
 		byte 6-7: elevator floor
-		byte 8-50: time 
+		byte 8-35: time 
+	Packet send from scheduler to elevator
+		byte 0-1: user current floor
+		byte 2-3: destination floor
+		byte 4-28: time

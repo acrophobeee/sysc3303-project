@@ -75,9 +75,9 @@ public class Scheduler {
 			}
 			System.out.println(temp);
 			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
-				floorRequest(data);
+				floorRequest(data, received);
 			} else if (data[0] == (byte) 0 && data[1] == (byte) 1) {
-				elevatorUpdate(data);
+				elevatorUpdate(data, received);
 			}
 		}
 	}
@@ -86,14 +86,18 @@ public class Scheduler {
 	 * @desc process floor's request
 	 * @param floor's data
 	 * */
-	public void floorRequest(byte data[]) {
+	public void floorRequest(byte data[], String received) {
+		byte[] dataSend = new byte[16];
 		byte[] request = new byte[4];
 		request[0] = data[4];
 		request[1] = data[5];
 		request[2] = data[6];
 		request[3] = data[7];
+		byte[] timeByte = received.getBytes();
+		System.arraycopy(request, 0, dataSend, 0, request.length);
+		System.arraycopy(timeByte, 0, dataSend, 4, timeByte.length);
 		try {
-			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 69);
+			sendPacket = new DatagramPacket(dataSend, dataSend.length, InetAddress.getLocalHost(), 69);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -109,7 +113,7 @@ public class Scheduler {
 		System.out.println("Scheduler: Order sent.\n");
 	}
 	
-	public void elevatorUpdate(byte data[]) {
+	public void elevatorUpdate(byte data[], String received) {
 		byte[] elevatorNum = new byte[2];
 		byte[] mode = new byte[2];
 		byte[] floor = new byte[2];
