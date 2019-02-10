@@ -12,7 +12,7 @@ public class Scheduler {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket schedulerSocket;
-	ElevatorStatus e;
+	private ElevatorStatus e;
 
 	public Scheduler() {
 		try {
@@ -24,6 +24,7 @@ public class Scheduler {
 			se.printStackTrace();
 			System.exit(1);
 		}
+		e = new ElevatorStatus(1, 69);
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class Scheduler {
 			System.out.println("Host port: " + receivePacket.getPort());
 			int len = receivePacket.getLength();
 			System.out.println("Length: " + len);
-			System.out.print("Containing: ");
+			System.out.print("Processing Time: ");
 
 			// Form a String from the byte array.
 			String received = new String(data, 8, len-8);
@@ -74,9 +75,9 @@ public class Scheduler {
 			}
 			System.out.println(temp);
 			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
-				floorRequest(data);
+				floorRequest(data, received);
 			} else if (data[0] == (byte) 0 && data[1] == (byte) 1) {
-				elevatorUpdate(data);
+				elevatorUpdate(data, received);
 			}
 		}
 	}
@@ -84,13 +85,20 @@ public class Scheduler {
 	/**
 	 * @desc process floor's request
 	 * @param floor's data
+	 * @param received time from floor
 	 * */
-	public void floorRequest(byte data[]) {
-		byte[] request = new byte[2];
+	public void floorRequest(byte data[], String received) {
+		byte[] dataSend = new byte[16];
+		byte[] request = new byte[4];
 		request[0] = data[4];
 		request[1] = data[5];
+		request[2] = data[6];
+		request[3] = data[7];
+		byte[] timeByte = received.getBytes();
+		System.arraycopy(request, 0, dataSend, 0, request.length);
+		System.arraycopy(timeByte, 0, dataSend, 4, timeByte.length);
 		try {
-			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 69);
+			sendPacket = new DatagramPacket(dataSend, dataSend.length, InetAddress.getLocalHost(), 69);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -106,7 +114,12 @@ public class Scheduler {
 		System.out.println("Scheduler: Order sent.\n");
 	}
 	
-	public void elevatorUpdate(byte data[]) {
+	/**
+	 * @desc send elevator's information to scheduler.
+	 * @param an array of bytes.
+	 * @param received time from elevator
+	 * */
+	public void elevatorUpdate(byte data[], String received) {
 		byte[] elevatorNum = new byte[2];
 		byte[] mode = new byte[2];
 		byte[] floor = new byte[2];
@@ -116,8 +129,10 @@ public class Scheduler {
 		mode[1] = data[5];
 		floor[0] = data[6];
 		floor[1] = data[7];
+		String state = decodeState(mode);
+		e.statusUpdate(byteToInt(floor), state);
 		System.out.println("the elevator number is :" + byteToInt(elevatorNum));
-		System.out.println("the mode is :" + byteToInt(mode));
+		System.out.println("the mode is :" + state);
 		System.out.println("the floor is :" + byteToInt(floor));
 		
 		try {
@@ -137,11 +152,36 @@ public class Scheduler {
 		System.out.println("Scheduler: Status sent.\n");
 	}
 	
+	
+	/**
+	 * @desc convert bytes to integer.
+	 * @param an array o bytes
+	 * @return converted integer
+	 * */
 	public int byteToInt(byte data[]) {
 		int result = 0;
 		result = data[0] * 10 + data[1];
 		return result;
 	}
+	
+	
+	/**
+	 * @desc determine the elevator's status.
+	 * @param an array of bytes
+	 * @return "up" or "down" or "idle"
+	 * */
+	public String decodeState(byte data[]) {
+		int temp = byteToInt(data);
+		if (temp == 1) {
+			return "up";
+		} else if (temp == 2) {
+			return "down";
+		} else if (temp == 3) {
+			return "idle";
+		}
+		return "unknown";
+	}
+	
 	
 	public static void main(String args[]) {
 		Scheduler c = new Scheduler();

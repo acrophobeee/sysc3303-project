@@ -14,42 +14,107 @@ public class Elevator {
 		this.elenumber = 1;
 	}
 
+	/**
+	 * @desc get elevator state in string
+	 * @return elevator state in string
+	 * */
 	public String getstate() {
 		return e.toString();
 	}
-
+	
+	/**
+	 * @desc get elevator state
+	 * @return elevator state
+	 * */
 	public Elevatorstate get() {
 		return e;
 	}
 
+	/**
+	 * @desc set elevator state
+	 * 
+	 * */
 	public void setstate(Elevatorstate state) {
 		e = state;
 	}
 
-	public void changemode(int requestfloor) {
-		if (requestfloor > currentfloor) {
-			setstate(new Upmode());
-		}
-		if (requestfloor < currentfloor) {
-			setstate(new Upmode());
+	
+	/**
+	 * @desc change elevator mode
+	 *
+	 * */
+	public void changemode() {
+		if (floor.get(0) != currentfloor) {
+			if (floor.get(0) > currentfloor) {
+				setstate(new Upmode());
+				increasefloor();
+			} else if (floor.get(0) < currentfloor) {
+				setstate(new Downmode());
+				decreasefloor();
+			} else {
+				setstate(new idle());
+			}
 		} else {
-			setstate(new idle());
+			floor.remove(0);
+			if (floor.isEmpty()) {
+				setstate(new idle());
+			} else {
+				if (floor.get(0) > currentfloor) {
+					setstate(new Upmode());
+					increasefloor();
+				} else if (floor.get(0) < currentfloor) {
+					setstate(new Downmode());
+					decreasefloor();
+				}
+			}
 		}
-	}
 
-	public void incrasefloor() {
+	}
+	
+	/**
+	 * @desc add the request into an arraylist
+	 *
+	 * */
+    public void add(int requestfloor) {
+       floor.add(requestfloor);	
+    }
+    
+    /**
+	 * @desc increase floor number
+	 * */
+	public void increasefloor() {
 		currentfloor++;
 	}
 
+	
+	/**
+	 * @desc decrease floor number
+	 * */
 	public void decreasefloor() {
 		currentfloor--;
 	}
 
+	/**
+	 * @desc get current floor number
+	 * @return number of current floor
+	 * */
 	public int getCurrentfloor() {
 		return currentfloor;
 	}
 
+	
+	/**
+	 * @desc get elevator number
+	 * @return elevator number
+	 * */
 	public int getElenumber() {
 		return elenumber;
+	}
+
+	public boolean commandClear() {
+		if (floor.isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 }
