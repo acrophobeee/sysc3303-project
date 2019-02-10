@@ -2,7 +2,7 @@ package elevatorSubsystem;
 
 import java.util.ArrayList;
 
-public class Elevator {
+public class Elevator implements Runnable {
 	private int elenumber;
 	private int currentfloor = 1;
 	private Elevatorstate idle = new idle();
@@ -116,5 +116,11 @@ public class Elevator {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }
