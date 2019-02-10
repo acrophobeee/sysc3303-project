@@ -15,22 +15,25 @@ import java.util.Date;
 public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
-	DatagramSocket sendSocket, receiveSocket;
+	DatagramSocket sendSocket;
 	
     public Elevator elevator;
     private Date date;
+    
+    private Thread E1, E2, E3, receiveS;
+    
 	public ElevatorSubsystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
 			// send UDP Datagram packets.
 			sendSocket = new DatagramSocket();
-
+			receiveS = new Thread(new ReceiveSocket(this), "ReceiveSocket");
 			// Construct a datagram socket and bind it to port 5000
 			// on the local host machine. This socket will be used to
 			// receive UDP Datagram packets.
-			receiveSocket = new DatagramSocket(69);
 			elevator = new Elevator();
+			
 			// to test socket timeout (2 seconds)
 			// receiveSocket.setSoTimeout(2000);
 		} catch (SocketException se) {
@@ -197,6 +200,14 @@ public class ElevatorSubsystem {
 			}
 		}
 
+	}
+	
+	/**
+	 * @desc receive packet from Receive Scoket class
+	 * @param packet datagram
+	 * */
+	public void put(DatagramPacket packet){
+		
 	}
 
 	public void stopServer() {
