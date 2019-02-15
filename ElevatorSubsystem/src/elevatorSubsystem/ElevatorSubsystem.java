@@ -10,19 +10,26 @@ import java.io.*;
 import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ElevatorSubsystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket;
-	
-    public Elevator elevator;
-    private Date date;
-    
-    private Thread E1, E2, E3, receiveS;
-    
+
+	public Elevator elevator;
+	private Date date;
+
+	private ArrayList<Object> order1, order2, order3;
+
+	private Thread E1, E2, E3, receiveS;
+
 	public ElevatorSubsystem() {
+		order1 = new ArrayList<Object>();
+		order2 = new ArrayList<Object>();
+		order3 = new ArrayList<Object>();
+
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -47,19 +54,56 @@ public class ElevatorSubsystem {
 		}
 	}
 
-	public void get() throws Exception {
-		while (true) {
-
-			// Block until a datagram packet is received from receiveSocket
+	public int get(int elenumber, int currentfloor, Elevatorstate state) {
+		int destination = 0;
+		try {
+			if (elenumber == 1) {
+				while (order1.isEmpty()) {
+					wait();
+				}
+				destination = (int) order1.get(0);
+				if (currentfloor == destination) {
+					order1.remove(0);
+					return 0;
+				}
+			} else if (elenumber == 2) {
+				while (order2.isEmpty()) {
+					wait();
+				}
+				destination = (int) order2.get(0);
+				if (currentfloor == destination) {
+					order2.remove(0);
+					return 0;
+				}
+			} else if (elenumber == 3) {
+				while (order3.isEmpty()) {
+					wait();
+				}
+				destination = (int) order3.get(0);
+				if (currentfloor == destination) {
+					order3.remove(0);
+					return 0;
+				}
+			} else {
+				System.out.println("Elevator Error");
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		if (currentfloor > destination) {
+			return -1;
+		}
+		return 1;
 
 	}
-	
+
 	/**
 	 * @desc receive packet from Receive Scoket class
 	 * @param packet datagram
-	 * */
-	public void put(DatagramPacket packet){
+	 */
+	public void put(DatagramPacket packet) {
 		receivePacket = packet;
 		byte data[] = new byte[16];
 		receivePacket = new DatagramPacket(data, data.length);
@@ -70,30 +114,30 @@ public class ElevatorSubsystem {
 		int len = receivePacket.getLength();
 		System.out.println("Length: " + len);
 		System.out.print("Containing: ");
-		
-		String received = new String(data, 4, len-4);
+
+		String received = new String(data, 4, len - 4);
 		System.out.println(received);
 		StringBuilder temp = new StringBuilder();
 		for (byte b : data) {
 			temp.append(b);
 		}
-		
-		String hour, mins, second;			
-		String[] splittedDate = received.split(":");			
+
+		String hour, mins, second;
+		String[] splittedDate = received.split(":");
 		String[] splittedSecond = splittedDate[2].split("\\.");
-		
+
 		hour = splittedDate[0];
 		mins = splittedDate[1];
 		second = splittedSecond[0];
-		
+
 		System.out.println("hour: " + hour + " mins: " + mins + " second: " + second);
-		
+
 		int a = data[0] * 10 + data[1];
 		int b = data[2] * 10 + data[3];
 
 		elevator.add(a);
 		elevator.add(b);
-		
+
 		int resH, resM, resS;
 		resH = Integer.parseInt(hour);
 		resM = Integer.parseInt(mins);
