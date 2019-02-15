@@ -6,7 +6,7 @@ import java.net.*;
 public class ReceiveSocket implements Runnable {
 	private ElevatorSubsystem system;
 	DatagramSocket receiveSocket;
-	DatagramPacket sendPacket;
+	DatagramPacket receivedPacket;
 
 	public ReceiveSocket(ElevatorSubsystem system) {
 		try {
@@ -27,14 +27,14 @@ public class ReceiveSocket implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
-			byte data[] = new byte[6];
-			sendPacket = new DatagramPacket(data, data.length);
-			System.out.println("Server: Waiting for Packet.\n");
+			byte data[] = new byte[16];
+			receivedPacket = new DatagramPacket(data, data.length);
+			System.out.println("ReceiveSocket: Waiting for Packet.\n");
 
 			// Block until a datagram packet is received from receiveSocket.
 			try {
 				System.out.println("Waiting..."); // so we know we're waiting
-				receiveSocket.receive(sendPacket);
+				receiveSocket.receive(receivedPacket);
 			} catch (IOException e) {
 				System.out.print("IO Exception: likely:");
 				System.out.println("Receive Socket Timed Out.\n" + e);
@@ -43,14 +43,19 @@ public class ReceiveSocket implements Runnable {
 			}
 
 			// Process the received datagram.
-			System.out.println("Server: Packet received:");
-			System.out.println("From host: " + sendPacket.getAddress());
-			System.out.println("Host port: " + sendPacket.getPort());
-			int len = sendPacket.getLength();
+			System.out.println("ReceiveSocket: Packet received:");
+			System.out.println("From host: " + receivedPacket.getAddress());
+			System.out.println("Host port: " + receivedPacket.getPort());
+			int len = receivedPacket.getLength();
 			System.out.println("Length: " + len);
-			System.out.print("Containing: ");
+			StringBuilder temp = new StringBuilder();
+			for (byte b : data) {
+				temp.append(b);
+			}
+			System.out.println(temp);
+			System.out.println();
 
-			system.put(sendPacket);
+			system.put(data);
 			// Slow things down (wait 0.5 seconds)
 			try {
 				Thread.sleep(500);

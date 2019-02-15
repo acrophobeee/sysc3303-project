@@ -21,24 +21,20 @@ public class ElevatorSubsystem {
 	public Elevator elevator;
 	private Date date;
 
-	private ArrayList<Object> order1, order2, order3;
-
 	private Thread E1, E2, E3, receiveS;
-
+    private ArrayList<Object> listE1, listE2, listE3;
+    
 	public ElevatorSubsystem() {
-		order1 = new ArrayList<Object>();
-		order2 = new ArrayList<Object>();
-		order3 = new ArrayList<Object>();
 
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
 			// send UDP Datagram packets.
 			sendSocket = new DatagramSocket();
-			receiveS = new Thread(new ReceiveSocket(this), "ReceiveSocket");
 			E1 = new Thread(new Elevator(1, this), "Elevator 1");
 			E2 = new Thread(new Elevator(2, this), "Elevator 2");
 			E3 = new Thread(new Elevator(3, this), "Elevator 3");
+			receiveS = new Thread(new ReceiveSocket(this), "ReceiveSocket");
 			// Construct a datagram socket and bind it to port 5000
 			// on the local host machine. This socket will be used to
 			// receive UDP Datagram packets.
@@ -46,6 +42,10 @@ public class ElevatorSubsystem {
 			E2.start();
 			E3.start();
 			receiveS.start();
+			
+			listE1 = new ArrayList<Object>();
+			listE2 = new ArrayList<Object>();
+			listE3 = new ArrayList<Object>();
 			// to test socket timeout (2 seconds)
 			// receiveSocket.setSoTimeout(2000);
 		} catch (SocketException se) {
@@ -58,30 +58,30 @@ public class ElevatorSubsystem {
 		int destination = 0;
 		try {
 			if (elenumber == 1) {
-				while (order1.isEmpty()) {
+				while (listE1.isEmpty()) {
 					wait();
 				}
-				destination = (int) order1.get(0);
+				destination = (int) listE1.get(0);
 				if (currentfloor == destination) {
-					order1.remove(0);
+					listE1.remove(0);
 					return 0;
 				}
 			} else if (elenumber == 2) {
-				while (order2.isEmpty()) {
+				while (listE2.isEmpty()) {
 					wait();
 				}
-				destination = (int) order2.get(0);
+				destination = (int) listE2.get(0);
 				if (currentfloor == destination) {
-					order2.remove(0);
+					listE2.remove(0);
 					return 0;
 				}
 			} else if (elenumber == 3) {
-				while (order3.isEmpty()) {
+				while (listE3.isEmpty()) {
 					wait();
 				}
-				destination = (int) order3.get(0);
+				destination = (int) listE3.get(0);
 				if (currentfloor == destination) {
-					order3.remove(0);
+					listE3.remove(0);
 					return 0;
 				}
 			} else {
@@ -96,52 +96,40 @@ public class ElevatorSubsystem {
 			return -1;
 		}
 		return 1;
-
+	}
+	
+	/**
+	 * @desc decide which elevator should use
+	 * */
+	public Thread getCar(int car) {
+		if(car==1) {
+			return E1;
+		}else if(car==2) {
+			return E2;
+		}else {
+			return E3;
+		}
 	}
 
 	/**
 	 * @desc receive packet from Receive Scoket class
 	 * @param packet datagram
 	 */
-	public void put(DatagramPacket packet) {
-		receivePacket = packet;
-		byte data[] = new byte[16];
-		receivePacket = new DatagramPacket(data, data.length);
-		// Process the received datagram.
-		System.out.println("Server: Packet received:");
-		System.out.println("From host: " + receivePacket.getAddress());
-		System.out.println("Host port: " + receivePacket.getPort());
-		int len = receivePacket.getLength();
-		System.out.println("Length: " + len);
-		System.out.print("Containing: ");
-
-		String received = new String(data, 4, len - 4);
-		System.out.println(received);
-		StringBuilder temp = new StringBuilder();
-		for (byte b : data) {
-			temp.append(b);
+	public void put(byte data[]) {
+	
+		int currFloor = data[0]*10 + data[1];
+		int destination = data[2]*10 + data[3];
+		int carNum = data[4]*10 + data[5];
+		
+		if(carNum==1) {
+			if(true) {
+				
+			}
+		}else if(carNum==2){
+			
+		}else if(carNum==3) {
+			
 		}
-
-		String hour, mins, second;
-		String[] splittedDate = received.split(":");
-		String[] splittedSecond = splittedDate[2].split("\\.");
-
-		hour = splittedDate[0];
-		mins = splittedDate[1];
-		second = splittedSecond[0];
-
-		System.out.println("hour: " + hour + " mins: " + mins + " second: " + second);
-
-		int a = data[0] * 10 + data[1];
-		int b = data[2] * 10 + data[3];
-
-		elevator.add(a);
-		elevator.add(b);
-
-		int resH, resM, resS;
-		resH = Integer.parseInt(hour);
-		resM = Integer.parseInt(mins);
-		resS = Integer.parseInt(second);
 	}
 
 	public void stopServer() {
@@ -152,7 +140,7 @@ public class ElevatorSubsystem {
 		ElevatorSubsystem c = new ElevatorSubsystem();
 		while (true) {
 			try {
-				c.receive();
+//				c.receive();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
