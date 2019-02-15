@@ -22,7 +22,7 @@ public class ElevatorSubsystem {
 	private Date date;
 
 	private Thread E1, E2, E3, receiveS;
-    private ArrayList<Object> listE1, listE2, listE3;
+    private ArrayList<Integer> listE1, listE2, listE3;
     
 	public ElevatorSubsystem() {
 
@@ -43,9 +43,9 @@ public class ElevatorSubsystem {
 			E3.start();
 			receiveS.start();
 			
-			listE1 = new ArrayList<Object>();
-			listE2 = new ArrayList<Object>();
-			listE3 = new ArrayList<Object>();
+			listE1 = new ArrayList<Integer>();
+			listE2 = new ArrayList<Integer>();
+			listE3 = new ArrayList<Integer>();
 			// to test socket timeout (2 seconds)
 			// receiveSocket.setSoTimeout(2000);
 		} catch (SocketException se) {
