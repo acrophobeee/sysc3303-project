@@ -32,7 +32,13 @@ public class Elevator implements Runnable{
 	@Override
 	public void run() {
 		while (true) {
-			int moveOrder = subsystem.get(elenumber, currentfloor, state);
+			int moveOrder = 0;
+			try {
+				moveOrder = subsystem.get(elenumber, currentfloor, state);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 			try {
 				Thread.sleep(1500);
