@@ -8,13 +8,12 @@ public class ElevatorStatusTest {
 	
 	@Before
 	public void setup () {
-		a = new ElevatorStatus(1, 666);
+		a = new ElevatorStatus(1);
 	}
 	
 	@Test
 	public void testInitial() {
 		assertEquals(a.getNumber(), 1);
-		assertEquals(a.getPort(), 666);
 		assertEquals(a.getFloor(), 1);
 		assertEquals(a.getState(), "idle");
 	}
@@ -23,7 +22,6 @@ public class ElevatorStatusTest {
 	public void testUpdate() {
 		a.statusUpdate(8, "up");
 		assertEquals(a.getNumber(), 1);
-		assertEquals(a.getPort(), 666);
 		assertEquals(a.getFloor(), 8);
 		assertEquals(a.getState(), "up");
 	}

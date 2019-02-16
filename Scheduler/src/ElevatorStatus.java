@@ -4,7 +4,6 @@
  */
 public class ElevatorStatus {
 	private int number; // the no. of elevator
-	private int port; // the port of elevator
 	private int floor; // the elevator's current position
 	private String state; // there are three states: idle, up, or down
 	
@@ -14,9 +13,8 @@ public class ElevatorStatus {
 	 * @param number The no. of elevator
 	 * @param port The port of elevator
 	 */
-	public ElevatorStatus (int number, int port) {
+	public ElevatorStatus (int number) {
 		this.number = number;
-		this.port = port;
 		floor = 1;
 		state = "idle";
 	}
@@ -37,24 +35,6 @@ public class ElevatorStatus {
 	 */
 	public void setNumber(int number) {
 		this.number = number;
-	}
-	
-	/**
-	 * Return the port of elevator
-	 * 
-	 * @return the port of elevator
-	 */
-	public int getPort() {
-		return port;
-	}
-	
-	/**
-	 * Set the elevator port N.O.
-	 * 
-	 * @param port the elevator port N.O.
-	 */
-	public void setPort(int port) {
-		this.port = port;
 	}
 	
 	/**
