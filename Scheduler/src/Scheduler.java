@@ -226,15 +226,73 @@ public class Scheduler {
 	
 	/**
 	 * Check all avairable request and sent the new order to elevator
-	 * 
 	 * @param e
 	 */
 	public void checkAllRequest(ElevatorStatus e) {
-		
-		ElevatorRequest shortest;
-		for (ElevatorRequest r : requests) {
+		if (e.getState() == "idle") {
+			int distance = 99999;
+			ElevatorRequest temp = null;
+			for (ElevatorRequest r : requests) {
+				if (distance > Math.abs(e.getFloor() - r.getCurrentFloor())) {
+					distance = Math.abs(e.getFloor() - r.getCurrentFloor());
+					temp = r;
+				}
+			}
 			
+			if (temp == null) {
+				return;
+			}
+			
+			// Sending request
+			continuteRequest(e.getNumber(), temp.getRequestData());
+			e.statusUpdate(e.getFloor(), temp.getDirection());
+			requests.remove(temp);
 		}
+		for (ElevatorRequest r : requests) {
+			if (r.getDirection() == e.getState()) {
+				if (e.getState() == "up" && e.getFloor() + 2 < r.getCurrentFloor()) {
+					// Sending request
+					continuteRequest(e.getNumber(), r.getRequestData());
+					e.statusUpdate(e.getFloor(), r.getDirection());
+					requests.remove(r);
+				} else if (e.getState() == "down" && e.getFloor() - 2 > r.getCurrentFloor())  {
+					// Sending request
+					continuteRequest(e.getNumber(), r.getRequestData());
+					e.statusUpdate(e.getFloor(), r.getDirection());
+					requests.remove(r);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Sending request from request list to the elevator
+	 */
+	public void continuteRequest(int elevatorNum, byte data[]) {
+		byte request[] = new byte[18];
+		
+		byte num[] = new byte[2];
+		num[0] = (byte) (elevatorNum / 10);
+		num[1] = (byte) (elevatorNum % 10);
+		
+		System.arraycopy(num, 0, request, 0, num.length);
+		System.arraycopy(data, 0, request, 2, data.length);
+		
+		try {
+			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 69);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		try {
+			schedulerSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("Scheduler: Order sent.");
 	}
 	
 	
