@@ -97,6 +97,9 @@ public class Scheduler {
 		byte[] timeByte = received.getBytes();
 		System.arraycopy(request, 0, dataSend, 0, request.length);
 		System.arraycopy(timeByte, 0, dataSend, 4, timeByte.length);
+		dataSend[4]=0;
+		dataSend[5]=1;
+		
 		try {
 			sendPacket = new DatagramPacket(dataSend, dataSend.length, InetAddress.getLocalHost(), 69);
 		} catch (UnknownHostException e) {

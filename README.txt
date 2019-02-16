@@ -44,7 +44,7 @@ Port:
 	PORT 3000: Bond to scheduler's receive Socket
 
 Data Format:
-	Packet send from Floor: 
+	Packet send from Floor to scheduler: 
 		byte 0-1: 00=user, 01=elevator-1
 		byte 2-3: 00=up, 01=down
 		byte 4-5: 01=01, 02=Cart2, 03=Cart3,...(user's current floor)

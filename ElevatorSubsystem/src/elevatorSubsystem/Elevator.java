@@ -34,7 +34,7 @@ public class Elevator implements Runnable{
 		while (true) {
 			int moveOrder = 0;
 			try {
-				moveOrder = subsystem.get(elenumber, currentfloor, state);
+				moveOrder = subsystem.elevatorAction(elenumber, currentfloor, state);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
