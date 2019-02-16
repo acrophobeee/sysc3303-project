@@ -110,10 +110,14 @@ public class ElevatorSubsystem {
 			return E3;
 		}
 	}
+	
+	/**
+	 * @desc sort the ArrayList after append an integer into required position
+	 * */
 
 	/**
 	 * @desc receive packet from Receive Scoket class
-	 * @param packet datagram
+	 * @param data the info data that get from schedule contain request information 
 	 */
 	public void put(byte data[]) {
 	
@@ -122,7 +126,18 @@ public class ElevatorSubsystem {
 		int carNum = data[4]*10 + data[5];
 		
 		if(carNum==1) {
-			if(true) {
+			int eleState = 0;
+			if(eleState==1) {
+				int first = listE1.get(0);
+				for(int i=0; i<listE1.size();i++) {
+					if(listE1.get(i)<) {
+						
+					}
+					listE1.add(index, element);
+				}
+			}else if(eleState==-1) {
+				
+			}else {
 				
 			}
 		}else if(carNum==2){
