@@ -20,12 +20,12 @@ public class ElevatorSubsystem {
 
 	public Elevator elevator;
 	private Date date;
-
+	private Byte time[];
 	private Thread E1, E2, E3, receiveS;
     private ArrayList<Object> listE1, listE2, listE3;
+    private int elevatorMode[] = new int[3];
     
 	public ElevatorSubsystem() {
-
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -46,6 +46,7 @@ public class ElevatorSubsystem {
 			listE1 = new ArrayList<Object>();
 			listE2 = new ArrayList<Object>();
 			listE3 = new ArrayList<Object>();
+			elevatorMode[0] = 0; elevatorMode[1] = 0; elevatorMode[2] = 0;
 			// to test socket timeout (2 seconds)
 			// receiveSocket.setSoTimeout(2000);
 		} catch (SocketException se) {
@@ -53,8 +54,17 @@ public class ElevatorSubsystem {
 			System.exit(1);
 		}
 	}
-
-	public int get(int elenumber, int currentfloor, Elevatorstate state) {
+	
+	/**
+	 * Order the elevator to perform a specific action (i.e. up, down, wait)
+	 * 
+	 * @param elenumber Elevator number
+	 * @param currentfloor Current floor
+	 * @param state The elevator state
+	 * @return Return 0 for elevator wait, 1 for elevator up, -1 for elevator down
+	 */
+	public int elevatorAction(int elenumber, int currentfloor, Elevatorstate state) {
+		updateElevator(elenumber, currentfloor, state);
 		int destination = 0;
 		try {
 			if (elenumber == 1) {
@@ -96,6 +106,62 @@ public class ElevatorSubsystem {
 			return -1;
 		}
 		return 1;
+	}
+	
+	/**
+	 * Sending a updated information to scheduler.
+	 * 
+	 * @param elevatorNum The elevator number
+	 * @param currentFloor Current Floor
+	 * @param state The elevator state
+	 */
+	public void updateElevator(int elevatorNum, int currentFloor, Elevatorstate state) {
+		byte fixvalue[] = new byte[2];
+		fixvalue[0] = (byte) 0;
+		fixvalue[1] = (byte) 1;
+		
+		byte num[] = new byte[2];
+		num[0] = (byte) (elevatorNum / 10);
+		num[1] = (byte) (elevatorNum % 10);
+		
+		byte mode[] = new byte[2];
+		if (state instanceof idle) {
+			mode[0] = (byte) 0;
+			mode[1] = (byte) 3;
+		} else if (state instanceof Upmode) {
+			mode[0] = (byte) 0;
+			mode[1] = (byte) 1;
+		} else if (state instanceof Downmode) {
+			mode[0] = (byte) 0;
+			mode[1] = (byte) 2;
+		}
+		
+		byte floor[] = new byte[2];
+		floor[0] = (byte) (currentFloor / 10);
+		floor[1] = (byte) (currentFloor % 10);
+		
+		byte databack[] = new byte[50];
+		
+		System.arraycopy(fixvalue, 0, databack, 0, 2);
+		System.arraycopy(num, 0, databack, 2, 2);
+		System.arraycopy(mode, 0, databack, 4, 2);
+		System.arraycopy(floor, 0, databack, 6, floor.length);
+		System.arraycopy(time, 0, databack, 8, time.length);
+		
+		try {
+			sendPacket = new DatagramPacket(databack, databack.length, InetAddress.getLocalHost(), 3000);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		try {
+			sendSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 	}
 	
 	/**
