@@ -7,24 +7,30 @@
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class Scheduler {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket schedulerSocket;
-	private ElevatorStatus e;
+	private ArrayList<ElevatorStatus> elevators;
+	private ArrayList<ElevatorRequest> requests;
 
 	public Scheduler() {
 		try {
 			// Construct a datagram socket and bind it to port 3000
 			schedulerSocket = new DatagramSocket(3000);
-			e = new ElevatorStatus(1, 69);
 			// receiveSocket.setSoTimeout(2000);
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
 		}
-		e = new ElevatorStatus(1, 69);
+		elevators = new ArrayList<ElevatorStatus>();
+		elevators.add(new ElevatorStatus(1));
+		elevators.add(new ElevatorStatus(2));
+		elevators.add(new ElevatorStatus(3));
+		requests = new ArrayList<ElevatorRequest>();
+		
 	}
 
 	/**
@@ -86,15 +92,68 @@ public class Scheduler {
 	 * @param received time from floor
 	 * */
 	public void floorRequest(byte data[], String received) {
-		byte[] dataSend = new byte[16];
-		byte[] request = new byte[4];
-		request[0] = data[4];
-		request[1] = data[5];
-		request[2] = data[6];
-		request[3] = data[7];
+		
+		byte[] request0 = new byte[2];
+		byte[] request1 = new byte[2];
+		byte[] request2 = new byte[2];
+		request0[0] = data[2];
+		request0[1] = data[3];
+		request1[0] = data[4];
+		request1[1] = data[5];
+		request2[0] = data[6];
+		request2[1] = data[7];
+		
+		int temp = byteToInt(request0);
+		String direction = "unknown";
+		if (temp == 0) {
+			direction = "up";
+		} else if (temp == 1) {
+			direction = "down";
+		}
+		int current = byteToInt(request1);
+		int destination = byteToInt(request2);
+		
+		int elevatorNum = -1;
+		int distance = 99999;
+		
+		for (ElevatorStatus e : elevators) {
+			if (e.getState() == "idle" && distance > Math.abs(current - e.getFloor())) {
+				distance = Math.abs(current - e.getFloor());
+				elevatorNum = e.getNumber();
+			} else if (e.getState() == direction) {
+				if (direction == "up" && e.getFloor() + 2 < current && distance > Math.abs(current - e.getFloor())) {
+					distance = Math.abs(current - e.getFloor());
+					elevatorNum = e.getNumber();
+				} else if (direction == "down" && e.getFloor() - 2 > current && distance > Math.abs(current - e.getFloor())) {
+					distance = Math.abs(current - e.getFloor());
+					elevatorNum = e.getNumber();
+				}
+			}
+		}
+		
 		byte[] timeByte = received.getBytes();
-		System.arraycopy(request, 0, dataSend, 0, request.length);
-		System.arraycopy(timeByte, 0, dataSend, 4, timeByte.length);
+		
+		if (elevatorNum == -1) {
+			byte[] requestStore = new byte[16];
+			System.arraycopy(request1, 0, requestStore, 2, request1.length);
+			System.arraycopy(request2, 0, requestStore, 4, request2.length);
+			System.arraycopy(timeByte, 0, requestStore, 6, timeByte.length);
+			requests.add(new ElevatorRequest(current, destination, direction, requestStore));
+			return;
+		}
+		
+		
+		
+		byte num[] = new byte[2];
+		num[0] = (byte) (elevatorNum / 10);
+		num[1] = (byte) (elevatorNum % 10);
+		
+		byte[] dataSend = new byte[18];
+		System.arraycopy(num, 0, dataSend, 0, num.length);
+		System.arraycopy(request1, 0, dataSend, 2, request1.length);
+		System.arraycopy(request2, 0, dataSend, 4, request2.length);
+		System.arraycopy(timeByte, 0, dataSend, 6, timeByte.length);
+		
 		try {
 			sendPacket = new DatagramPacket(dataSend, dataSend.length, InetAddress.getLocalHost(), 69);
 		} catch (UnknownHostException e) {
@@ -127,8 +186,22 @@ public class Scheduler {
 		mode[1] = data[5];
 		floor[0] = data[6];
 		floor[1] = data[7];
+		
 		String state = decodeState(mode);
-		e.statusUpdate(byteToInt(floor), state);
+		
+		for (ElevatorStatus e : elevators) {
+			if (e.getNumber() == byteToInt(elevatorNum)) {
+				if (e.getState() != "idle" && e.getState() != state) {
+					e.statusUpdate(byteToInt(floor), state);
+					checkAllRequest(e);
+				} else {
+					e.statusUpdate(byteToInt(floor), state);
+				}
+				
+				break;
+			}
+		}
+		
 		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
 		System.out.println("the mode is : " + state);
 		System.out.println("the floor is : " + byteToInt(floor));
@@ -149,6 +222,19 @@ public class Scheduler {
 		}
 
 		System.out.println("Scheduler: Status sent.\n");
+	}
+	
+	/**
+	 * Check all avairable request and sent the new order to elevator
+	 * 
+	 * @param e
+	 */
+	public void checkAllRequest(ElevatorStatus e) {
+		
+		ElevatorRequest shortest;
+		for (ElevatorRequest r : requests) {
+			
+		}
 	}
 	
 	
