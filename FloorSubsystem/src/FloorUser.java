@@ -42,7 +42,13 @@ public class FloorUser {
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate= dateFormat.format(date);
         
-		sendSocket(formattedDate, 3, up, 5);
+		sendSocket(formattedDate, 2, up, 5);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -112,8 +118,22 @@ public class FloorUser {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Client: Packet sent 1.\n");
+		try {
+			sendSocket.send(sendPacket);
+			System.out.println("Client: Packet sent 2.\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 
-		System.out.println("Client: Packet sent.\n");
+		
 	}
 	
 	/**

@@ -63,17 +63,15 @@ public class Scheduler {
 			System.out.println("From host: " + receivePacket.getAddress());
 			System.out.println("Host port: " + receivePacket.getPort());
 			int len = receivePacket.getLength();
-			System.out.println("Length: " + len);
-			System.out.print("Processing Time: ");
-
+			
 			// Form a String from the byte array.
 			String received = new String(data, 8, len-8);
-			System.out.println(received);
 			StringBuilder temp = new StringBuilder();
 			for (byte b : data) {
 				temp.append(b);
 			}
-			System.out.println(temp);
+			System.out.println("Data in byte form : " + temp + "\n");
+			
 			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
 				floorRequest(data, received);
 			} else if (data[0] == (byte) 0 && data[1] == (byte) 1) {
@@ -134,9 +132,10 @@ public class Scheduler {
 		floor[1] = data[7];
 		String state = decodeState(mode);
 		e.statusUpdate(byteToInt(floor), state);
-		System.out.println("the elevator number is :" + byteToInt(elevatorNum));
-		System.out.println("the mode is :" + state);
-		System.out.println("the floor is :" + byteToInt(floor));
+		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
+		System.out.println("the mode is : " + state);
+		System.out.println("the floor is : " + byteToInt(floor));
+		System.out.println("the time is : " + received);
 		
 		try {
 			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
