@@ -198,10 +198,9 @@ public class ElevatorSubsystem {
 	 * @param data the info data that get from schedule contain request information 
 	 */
 	public void put(byte data[]) {
-	
-		int currFloor = data[0]*10 + data[1];
-		int destination = data[2]*10 + data[3];
-		int carNum = data[4]*10 + data[5];
+		int carNum = data[0]*10 + data[1];
+		int currFloor = data[2]*10 + data[3];
+		int destination = data[4]*10 + data[5];		
 //		System.arraycopy(data, 4, time, 0, data.length);
 //		System.arraycopy(data, 4, time, 0, data.length);
 		
@@ -267,7 +266,7 @@ public class ElevatorSubsystem {
 			}
 			
 		}else if(carNum==2){
-			System.out.println("Elevator 1 received task from: " + currFloor + " to " + destination);
+			System.out.println("Elevator 2 received task from: " + currFloor + " to " + destination);
 			if(listE2.isEmpty()) {
 				listE2.add(currFloor);
 				listE2.add(1, destination);
@@ -326,7 +325,7 @@ public class ElevatorSubsystem {
 			}
 			
 		}else if(carNum==3) {
-			System.out.println("Elevator 1 received task from: " + currFloor + " to " + destination);
+			System.out.println("Elevator 3 received task from: " + currFloor + " to " + destination);
 			if(listE3.isEmpty()) {
 				listE3.add(currFloor);
 				listE3.add(1, destination);

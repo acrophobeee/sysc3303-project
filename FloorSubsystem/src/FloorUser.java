@@ -49,6 +49,23 @@ public class FloorUser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		sendSocket(formattedDate, 4, up, 10);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sendSocket(formattedDate, 5, up, 9);		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sendSocket(formattedDate, 9, down, 5);
+		
+		
 	}
 	
 	/**
@@ -124,16 +141,7 @@ public class FloorUser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Client: Packet sent 1.\n");
-		try {
-			sendSocket.send(sendPacket);
-			System.out.println("Client: Packet sent 2.\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-
-		
+		System.out.println("Client: Packet sent 1.\n");		
 	}
 	
 	/**
