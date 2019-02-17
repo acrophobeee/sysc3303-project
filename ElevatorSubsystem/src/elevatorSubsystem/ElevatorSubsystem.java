@@ -214,8 +214,8 @@ public class ElevatorSubsystem {
 			}else if(elevatorMode[0]==1) {
 				//insert user's current floor to the list
 				for(int i=0; i<listE1.size(); i++) {
-					if(listE1.get(i)>listE1.get(i+1) || listE1.size()==i) {
-						listE1.add(i, currFloor);
+					if(listE1.get(i)>listE1.get(i+1) || listE1.size()-1==i) {
+						listE1.add(i+1, currFloor);
 					}
 					if(currFloor < listE1.get(i)) {
 						listE1.add(i, currFloor);
@@ -228,7 +228,7 @@ public class ElevatorSubsystem {
 				//insert user's destination to the list
 				for(int i=0; i<listE1.size(); i++) {
 					if(listE1.get(i)>listE1.get(i+1) || listE1.size()-1==i) {
-						listE1.add(i, currFloor);
+						listE1.add(i+1, currFloor);
 					}
 					if(destination < listE1.get(i)) {
 						listE1.add(i, destination);
@@ -240,11 +240,11 @@ public class ElevatorSubsystem {
 			}else if(elevatorMode[0]== -1) {
 				//insert user's current floor to the list
 				for(int i=0; i<listE1.size(); i++) {
-					if(listE1.get(i)<listE1.get(i+1) || listE1.size()==i) {
-						listE1.add(i, destination);
+					if(listE1.get(i)<listE1.get(i+1) || listE1.size()-1==i) {
+						listE1.add(i+1, destination);
 					}
 					if(destination > listE1.get(i)) {
-						listE1.add(i+1, destination);
+						listE1.add(i, destination);
 						break;
 					}else if(destination == listE1.get(i)) {
 						break;
@@ -254,10 +254,10 @@ public class ElevatorSubsystem {
 				//insert user's destination to the list
 				for(int i=0; i<listE1.size(); i++) {
 					if(listE1.get(i)<listE1.get(i+1) || listE1.size()-1==i) {
-						listE1.add(i, destination);
+						listE1.add(i+1, destination);
 					}
 					if(destination > listE1.get(i)) {
-						listE1.add(i+1, destination);
+						listE1.add(i, destination);
 						break;
 					}else if(destination == listE1.get(i)) {
 						break;
@@ -273,8 +273,8 @@ public class ElevatorSubsystem {
 			}else if(elevatorMode[0]==1) {
 				//insert user's current floor to the list
 				for(int i=0; i<listE2.size(); i++) {
-					if(listE2.get(i)>listE2.get(i+1) || listE2.size()==i) {
-						listE2.add(i, currFloor);
+					if(listE2.get(i)>listE2.get(i+1) || listE2.size()-1==i) {
+						listE2.add(i+1, currFloor);
 					}
 					if(currFloor < listE2.get(i)) {
 						listE2.add(i, currFloor);
@@ -287,7 +287,7 @@ public class ElevatorSubsystem {
 				//insert user's destination to the list
 				for(int i=0; i<listE2.size(); i++) {
 					if(listE2.get(i)>listE2.get(i+1) || listE2.size()-1==i) {
-						listE2.add(i, currFloor);
+						listE2.add(i+1, currFloor);
 					}
 					if(destination < listE2.get(i)) {
 						listE2.add(i, destination);
@@ -299,11 +299,11 @@ public class ElevatorSubsystem {
 			}else if(elevatorMode[0]== -1) {
 				//insert user's current floor to the list
 				for(int i=0; i<listE2.size(); i++) {
-					if(listE2.get(i)<listE2.get(i+1) || listE2.size()==i) {
-						listE2.add(i, destination);
+					if(listE2.get(i)<listE2.get(i+1) || listE2.size()-1==i) {
+						listE2.add(i+1, destination);
 					}
 					if(destination > listE2.get(i)) {
-						listE2.add(i+1, destination);
+						listE2.add(i, destination);
 						break;
 					}else if(destination == listE2.get(i)) {
 						break;
@@ -313,10 +313,10 @@ public class ElevatorSubsystem {
 				//insert user's destination to the list
 				for(int i=0; i<listE2.size(); i++) {
 					if(listE2.get(i)<listE2.get(i+1) || listE2.size()-1==i) {
-						listE2.add(i, destination);
+						listE2.add(i+1, destination);
 					}
 					if(destination > listE2.get(i)) {
-						listE2.add(i+1, destination);
+						listE2.add(i, destination);
 						break;
 					}else if(destination == listE2.get(i)) {
 						break;
@@ -332,8 +332,8 @@ public class ElevatorSubsystem {
 			}else if(elevatorMode[0]==1) {
 				//insert user's current floor to the list
 				for(int i=0; i<listE3.size(); i++) {
-					if(listE3.get(i)>listE3.get(i+1) || listE3.size()==i) {
-						listE3.add(i, currFloor);
+					if(listE3.get(i)>listE3.get(i+1) || listE3.size()-1==i) {
+						listE3.add(i+1, currFloor);
 					}
 					if(currFloor < listE3.get(i)) {
 						listE3.add(i, currFloor);
@@ -346,7 +346,7 @@ public class ElevatorSubsystem {
 				//insert user's destination to the list
 				for(int i=0; i<listE3.size(); i++) {
 					if(listE3.get(i)>listE3.get(i+1) || listE3.size()-1==i) {
-						listE3.add(i, currFloor);
+						listE3.add(i+1, currFloor);
 					}
 					if(destination < listE3.get(i)) {
 						listE3.add(i, destination);
@@ -358,11 +358,11 @@ public class ElevatorSubsystem {
 			}else if(elevatorMode[0]== -1) {
 				//insert user's current floor to the list
 				for(int i=0; i<listE3.size(); i++) {
-					if(listE3.get(i)<listE3.get(i+1) || listE3.size()==i) {
-						listE3.add(i, destination);
+					if(listE3.get(i)<listE3.get(i+1) || listE3.size()-1==i) {
+						listE3.add(i+1, destination);
 					}
 					if(destination > listE3.get(i)) {
-						listE3.add(i+1, destination);
+						listE3.add(i, destination);
 						break;
 					}else if(destination == listE3.get(i)) {
 						break;
@@ -372,17 +372,30 @@ public class ElevatorSubsystem {
 				//insert user's destination to the list
 				for(int i=0; i<listE3.size(); i++) {
 					if(listE3.get(i)<listE3.get(i+1) || listE3.size()-1==i) {
-						listE3.add(i, destination);
+						listE3.add(i+1, destination);
 					}
 					if(destination > listE3.get(i)) {
-						listE3.add(i+1, destination);
+						listE3.add(i, destination);
 						break;
 					}else if(destination == listE3.get(i)) {
 						break;
 					}
 				}
+				
 			}
 		}
+		for(Integer i: listE1) {
+			System.out.print(i + " ");
+		}
+		System.out.print(" ");
+		for(Integer i: listE2) {
+			System.out.print(i + " ");
+		}
+		System.out.print(" ");
+		for(Integer i: listE3) {
+			System.out.print(i + " ");
+		}
+		System.out.print(" ");
 	}
 
 	public void stopServer() {
