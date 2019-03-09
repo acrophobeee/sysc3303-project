@@ -135,14 +135,22 @@ public class Scheduler {
 		
 		if (elevatorNum == -1) {
 			byte[] requestStore = new byte[16];
-			System.arraycopy(request1, 0, requestStore, 2, request1.length);
-			System.arraycopy(request2, 0, requestStore, 4, request2.length);
-			System.arraycopy(timeByte, 0, requestStore, 6, timeByte.length);
+			System.arraycopy(request1, 0, requestStore, 0, request1.length);
+			System.arraycopy(request2, 0, requestStore, 2, request2.length);
+			System.arraycopy(timeByte, 0, requestStore, 4, timeByte.length);
 			requests.add(new ElevatorRequest(current, destination, direction, requestStore));
 			return;
 		}
 		
-		
+		for (ElevatorStatus e : elevators) {
+			if (e.getNumber() == elevatorNum) {
+				String state = "up";
+				if (e.getFloor() > current || (e.getFloor() == current && e.getFloor() > destination)) {
+					state = "down";
+				}
+				e.statusUpdate(e.getFloor(), state);
+			}
+		}
 		
 		byte num[] = new byte[2];
 		num[0] = (byte) (elevatorNum / 10);
@@ -213,6 +221,8 @@ public class Scheduler {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		
 		
 		try {
 			schedulerSocket.send(sendPacket);
