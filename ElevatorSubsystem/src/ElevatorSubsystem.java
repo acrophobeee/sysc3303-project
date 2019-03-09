@@ -22,6 +22,9 @@ public class ElevatorSubsystem {
 		t.start();
 	}
 	
+	public void statusUpdate(int elenumber, int currentfloor, Elevatorstate state) {
+		controlSystem.updateElevator(elenumber, currentfloor, state);
+	}
 	/**
 	 * Order the elevator to perform a specific action (i.e. up, down, wait)
 	 * 
@@ -31,7 +34,6 @@ public class ElevatorSubsystem {
 	 * @return Return 0 for elevator wait, 1 for elevator up, -1 for elevator down
 	 */
 	public int elevatorAction(int elenumber, int currentfloor, Elevatorstate state) {
-		controlSystem.updateElevator(elenumber, currentfloor, state);
 		int destination = 0;
 		while (order.isEmpty()) {
 			if (elevator.getState() == 0) {

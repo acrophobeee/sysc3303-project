@@ -10,6 +10,7 @@ public class Elevator implements Runnable{
 		subsystem = refSystem;
 		currentfloor = 1;
 		state = new idle();
+		subsystem.statusUpdate(elenumber, currentfloor, state);
 	}
 	
 	/**
@@ -19,18 +20,22 @@ public class Elevator implements Runnable{
 	 */
 	public void move(int order) {
 		if (order == 0) {
-			execute(5000);
 			state = new idle();
+			subsystem.statusUpdate(elenumber, currentfloor, state);
 		} else if (order == 1) {
 			state = new Upmode();
+			subsystem.statusUpdate(elenumber, currentfloor, state);
 			execute(2000);
 			currentfloor++;
 		} else if (order == 2) {
 			state = new Downmode();
+			subsystem.statusUpdate(elenumber, currentfloor, state);
 			execute(2000);
 			currentfloor--;
 		} else if (order == 3) {
 			state = new DoorOpen();
+			subsystem.statusUpdate(elenumber, currentfloor, state);
+			execute(5000);
 		} else {
 			System.out.println("ERROR!!!!!!!!!!");
 		}
