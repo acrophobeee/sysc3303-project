@@ -108,15 +108,15 @@ public class ElevatorControlSystem {
 	/**
 	 * @desc decide which elevator should use
 	 */
-	public Thread getCar(int car) {
-		if (car == 1) {
-			return E1;
-		} else if (car == 2) {
-			return E2;
-		} else {
-			return E3;
-		}
-	}
+//	public Thread getCar(int car) {
+//		if (car == 1) {
+//			return E1;
+//		} else if (car == 2) {
+//			return E2;
+//		} else {
+//			return E3;
+//		}
+//	}
 
 	/**
 	 * @desc sort the ArrayList after append an integer into required position
