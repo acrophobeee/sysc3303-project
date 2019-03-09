@@ -333,6 +333,8 @@ public class Scheduler {
 			return "down";
 		} else if (temp == 3) {
 			return "idle";
+		} else if (temp == 4) {
+			return "door open";
 		}
 		return "unknown";
 	}

@@ -1,6 +1,4 @@
 
-import java.io.*;
-import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,24 +34,28 @@ public class ElevatorSubsystem {
 		controlSystem.updateElevator(elenumber, currentfloor, state);
 		int destination = 0;
 		while (order.isEmpty()) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (elevator.getState() == 0) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				return 0;
 			}
 		}
 		destination = order.get(0);
 		if (currentfloor == destination) {
 			order.remove(0);
-			return 0;
+			return 3;
 		}
 		
-		if (currentfloor > destination) {
-			return -1;
+		if (currentfloor < destination) {
+			return 1;
 		}
 		
-		return 1;
+		return 2;
 	}
 	
 	/**

@@ -1,7 +1,4 @@
 
-
-import java.util.*;
-
 public class Elevator implements Runnable{
 	private int elenumber;
 	private int currentfloor;
@@ -15,20 +12,50 @@ public class Elevator implements Runnable{
 		state = new idle();
 	}
 	
+	/**
+	 * The elevator perform the action
+	 * 
+	 * @param order The order provide by subsystem
+	 */
 	public void move(int order) {
 		if (order == 0) {
+			execute(5000);
 			state = new idle();
 		} else if (order == 1) {
 			state = new Upmode();
+			execute(2000);
 			currentfloor++;
-		} else if (order == -1) {
+		} else if (order == 2) {
 			state = new Downmode();
+			execute(2000);
 			currentfloor--;
+		} else if (order == 3) {
+			state = new DoorOpen();
 		} else {
 			System.out.println("ERROR!!!!!!!!!!");
 		}
+		
 	}
 	
+	/**
+	 * Simulate the elevator execution
+	 * 
+	 * @param time the time to perform a action
+	 */
+	public void execute(long time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Return the elevator state
+	 * 
+	 * @return 1 if upmode, -1 if downmode, 0 if idle, 2 if door popen
+	 */
 	public int getState() {
 		if (state instanceof Upmode) {
 			return 1;
@@ -36,6 +63,8 @@ public class Elevator implements Runnable{
 			return -1;
 		} else if (state instanceof idle) {
 			return 0;
+		} else if (state instanceof DoorOpen) {
+			return 2;
 		}
 		return -99999;
 	}
@@ -51,12 +80,6 @@ public class Elevator implements Runnable{
 				e1.printStackTrace();
 			}
 
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			move(moveOrder);
 		}
 	}

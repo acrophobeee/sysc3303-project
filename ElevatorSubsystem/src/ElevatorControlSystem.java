@@ -6,7 +6,6 @@
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ElevatorControlSystem {
@@ -18,9 +17,6 @@ public class ElevatorControlSystem {
 	public Elevator elevator;
 	private Date date;
 	private Thread receiveS;
-	private ArrayList<Integer> listE1, listE2, listE3;
-	private int elevatorMode[] = new int[3];// elevatorMode[0] = elevator 1, elevatorMode[1] = elevator 2,
-											// elevatorMode[2] = elevator 3,
 
 	public ElevatorControlSystem() {
 		try {
@@ -37,7 +33,6 @@ public class ElevatorControlSystem {
 			// receive UDP Datagram packets.
 			receiveS.start();
 			date = new Date();
-			String d = date.toString();
 			// to test socket timeout (2 seconds)
 			// receiveSocket.setSoTimeout(2000);
 			
@@ -75,6 +70,9 @@ public class ElevatorControlSystem {
 		} else if (state instanceof Downmode) {
 			mode[0] = (byte) 0;
 			mode[1] = (byte) 2;
+		} else if (state instanceof DoorOpen) {
+			mode[0] = (byte) 0;
+			mode[1] = (byte) 4;
 		}
 
 		byte floor[] = new byte[2];
@@ -145,21 +143,15 @@ public class ElevatorControlSystem {
 		}
 		
 	}
-
+	
+	/**
+	 * Stop the elevater system
+	 */
 	public void stopServer() {
 		sendSocket.close();
 	}
 
 	public static void main(String args[]) throws Exception {
 		ElevatorControlSystem c = new ElevatorControlSystem();
-		while (true) {
-			try {
-//				c.receive();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
 	}
 }
