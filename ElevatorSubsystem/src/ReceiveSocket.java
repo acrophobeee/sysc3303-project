@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.net.*;
 
 public class ReceiveSocket implements Runnable {
-	private ElevatorSubsystem system;
+	private ElevatorControlSystem system;
 	DatagramSocket receiveSocket;
 	DatagramPacket receivedPacket;
 
-	public ReceiveSocket(ElevatorSubsystem system) {
+	public ReceiveSocket(ElevatorControlSystem system) {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to

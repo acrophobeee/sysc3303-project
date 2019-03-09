@@ -29,6 +29,17 @@ public class Elevator implements Runnable{
 		}
 	}
 	
+	public int getState() {
+		if (state instanceof Upmode) {
+			return 1;
+		} else if (state instanceof Downmode) {
+			return -1;
+		} else if (state instanceof idle) {
+			return 0;
+		}
+		return -99999;
+	}
+	
 	@Override
 	public void run() {
 		while (true) {

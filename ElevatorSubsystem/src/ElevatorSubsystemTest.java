@@ -7,10 +7,10 @@ import org.junit.Test;
 
 public class ElevatorSubsystemTest {
    
-	private ElevatorSubsystem e;
+	private ElevatorControlSystem e;
 	@Before
 	public void setUp() throws Exception {
-		e = new ElevatorSubsystem();
+		e = new ElevatorControlSystem();
 	}
 
 	@Test
