@@ -235,7 +235,7 @@ public class Scheduler {
 	}
 	
 	/**
-	 * Check all avairable request and sent the new order to elevator
+	 * Check all available request and sent the new order to elevator
 	 * @param e
 	 */
 	public void checkAllRequest(ElevatorStatus e) {
@@ -277,6 +277,8 @@ public class Scheduler {
 	
 	/**
 	 * Sending request from request list to the elevator
+	 * @param elevatorNum the number of elevator to be sent the request
+	 * @param the request data from client and send to elevator
 	 */
 	public void continuteRequest(int elevatorNum, byte data[]) {
 		byte request[] = new byte[18];
