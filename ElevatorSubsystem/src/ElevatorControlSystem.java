@@ -1,5 +1,3 @@
-
-
 // SimpleEchoServer.java
 // This class is the server side of a simple echo server based on
 // UDP/IP. The server receives from a client a packet containing a character
@@ -8,33 +6,31 @@
 
 import java.io.*;
 import java.net.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ElevatorSubsystem {
+public class ElevatorControlSystem {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket;
-
+	
+	private ElevatorSubsystem E1, E2, E3;
 	public Elevator elevator;
 	private Date date;
-	private byte[] time;
-	private Thread E1, E2, E3, receiveS;
+	private Thread receiveS;
 	private ArrayList<Integer> listE1, listE2, listE3;
 	private int elevatorMode[] = new int[3];// elevatorMode[0] = elevator 1, elevatorMode[1] = elevator 2,
 											// elevatorMode[2] = elevator 3,
 
-	public ElevatorSubsystem() {
+	public ElevatorControlSystem() {
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
 			// send UDP Datagram packets.
 			sendSocket = new DatagramSocket();
-			E1 = new Thread(new Elevator(1, this), "Elevator 1");
-			E2 = new Thread(new Elevator(2, this), "Elevator 2");
-			E3 = new Thread(new Elevator(3, this), "Elevator 3");
+			E1 = new ElevatorSubsystem(1, this);
+			E2 = new ElevatorSubsystem(2, this);
+			E3 = new ElevatorSubsystem(3, this);
 			receiveS = new Thread(new ReceiveSocket(this), "ReceiveSocket");
 			// Construct a datagram socket and bind it to port 5000
 			// on the local host machine. This socket will be used to
@@ -42,84 +38,16 @@ public class ElevatorSubsystem {
 			receiveS.start();
 			date = new Date();
 			String d = date.toString();
-			time = d.getBytes();
-
-			listE1 = new ArrayList<Integer>();
-			listE2 = new ArrayList<Integer>();
-			listE3 = new ArrayList<Integer>();
 			// to test socket timeout (2 seconds)
 			// receiveSocket.setSoTimeout(2000);
-			E1.start();
-			E2.start();
-			E3.start();
+			
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
 		}
 	}
 
-	/**
-	 * Order the elevator to perform a specific action (i.e. up, down, wait)
-	 * 
-	 * @param elenumber    Elevator number
-	 * @param currentfloor Current floor
-	 * @param state        The elevator state
-	 * @return Return 0 for elevator wait, 1 for elevator up, -1 for elevator down
-	 */
-	public int elevatorAction(int elenumber, int currentfloor, Elevatorstate state) {
-		updateElevator(elenumber, currentfloor, state);
-		int destination = 0;
-		if (elenumber == 1) {
-			while (listE1.isEmpty()) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			destination = (int) listE1.get(0);
-			if (currentfloor == destination) {
-				listE1.remove(0);
-				return 0;
-			}
-		} else if (elenumber == 2) {
-			while (listE2.isEmpty()) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			destination = (int) listE2.get(0);
-			if (currentfloor == destination) {
-				listE2.remove(0);
-				return 0;
-			}
-		} else if (elenumber == 3) {
-			while (listE3.isEmpty()) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			destination = (int) listE3.get(0);
-			if (currentfloor == destination) {
-				listE3.remove(0);
-				return 0;
-			}
-		} else {
-			System.out.println("Elevator Error");
-		}
-
-		if (currentfloor > destination) {
-			return -1;
-		}
-		return 1;
-	}
+	
 
 	/**
 	 * Sending a updated information to scheduler.
@@ -422,7 +350,7 @@ public class ElevatorSubsystem {
 	}
 
 	public static void main(String args[]) throws Exception {
-		ElevatorSubsystem c = new ElevatorSubsystem();
+		ElevatorControlSystem c = new ElevatorControlSystem();
 		while (true) {
 			try {
 //				c.receive();
