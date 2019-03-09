@@ -6,19 +6,22 @@ import java.util.Date;
 
 public class ElevatorSubsystem {
 	private ElevatorControlSystem controlSystem;
-	private Thread elevator;
+	private Elevator elevator;
 	private Date date;
 	private ArrayList<Integer> order;
 	private int elevatorMode;
+	private int eleNum;
 	
 	public ElevatorSubsystem(int i, ElevatorControlSystem controlSystem) {
 		
+		eleNum=i;
 		this.controlSystem = controlSystem;
-		elevator = new Thread(new Elevator(i, this), "Elevator " + i);
+		elevator = new Elevator(i, this);
+		Thread t = new Thread(elevator, "Elevator" + i);
 		date = new Date();
 		String d = date.toString();
 		order = new ArrayList<Integer>();
-		elevator.start();
+		t.start();
 	}
 	
 	/**
@@ -51,5 +54,77 @@ public class ElevatorSubsystem {
 		}
 		
 		return 1;
+	}
+	
+	/**
+	 * @desc put new client request into order list 
+	 * */
+	public void putNewRequest(int currFloor, int destination) {
+		System.out.println("Elevator "+eleNum+" received task from: " + currFloor + " to " + destination);
+		elevatorMode = elevator.getState();
+		if (order.isEmpty() || elevatorMode==0) {
+			order.add(0, currFloor);
+			order.add(1, destination);
+		} else {
+			System.out.println(elevatorMode);
+			if (elevatorMode == 1) {
+
+				// insert user's current floor to the list
+				for (int i = 0; i < order.size(); i++) {
+					System.out.println(order.get(i));
+					if (order.get(i) > order.get(i + 1) || order.size() == i) {
+						order.add(i, currFloor);						
+					}
+					if (currFloor < order.get(i)) {
+						order.add(i, currFloor);
+						break;
+					} else if (currFloor == order.get(i)) {
+						break;
+					}
+				}
+
+				// insert user's destination to the list
+				for (int i = 0; i < order.size(); i++) {
+					System.out.println(order.get(i));
+					if (order.get(i) > order.get(i + 1) || order.size() - 1 == i) {
+						order.add(i, currFloor);
+					}
+					if (destination < order.get(i)) {
+						order.add(i, destination);
+						break;
+					} else if (destination == order.get(i)) {
+						break;
+					}
+				}
+			} else if (elevatorMode == -1) {
+				// insert user's current floor to the list
+				for (int i = 0; i < order.size(); i++) {
+					System.out.println(order.get(i));
+					if (order.get(i) < order.get(i + 1) || order.size() == i) {
+						order.add(i, destination);
+					}
+					if (destination > order.get(i)) {
+						order.add(i + 1, destination);
+						break;
+					} else if (destination == order.get(i)) {
+						break;
+					}
+				}
+
+				// insert user's destination to the list
+				for (int i = 0; i < order.size(); i++) {
+					if (order.get(i) < order.get(i + 1) || order.size() - 1 == i) {
+						order.add(i, destination);
+					}
+					if (destination > order.get(i)) {
+						order.add(i + 1, destination);
+						break;
+					} else if (destination == order.get(i)) {
+						break;
+					}
+				}
+			}
+		}
+		
 	}
 }
