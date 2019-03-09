@@ -283,7 +283,7 @@ public class ElevatorSubsystem {
 		} else if (carNum == 2) {
 			System.out.println("Elevator 2 received task from: " + currFloor + " to " + destination);
 			if (listE2.isEmpty() || elevatorMode[0]==0) {
-				listE2.add(currFloor);
+				listE2.add(0, currFloor);
 				listE2.add(1, destination);
 			} else {
 				if (elevatorMode[0] == 1) {
@@ -344,7 +344,7 @@ public class ElevatorSubsystem {
 		} else if (carNum == 3) {
 			System.out.println("Elevator 3 received task from: " + currFloor + " to " + destination);
 			if (listE3.isEmpty() || elevatorMode[0]==0) {
-				listE3.add(currFloor);
+				listE3.add(0, currFloor);
 				listE3.add(1, destination);
 			} else {
 				if (elevatorMode[0] == 1) {
