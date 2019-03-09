@@ -18,7 +18,7 @@ public class ElevatorSubsystem {
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket;
 
-	public Elevator elevator;
+//	public Elevator elevator;
 	private Date date;
 	private byte[] time;
 	private Thread E1, E2, E3, receiveS;
