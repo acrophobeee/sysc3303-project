@@ -34,6 +34,8 @@ Files included:
 8)ElevatorControlSystem.java
 9)Elevatorstate.java
 10)ReceiveSocket.java
+11)Shutdown.java
+12)TimeChecking.java
 
 11)Scheduler.java
 12)ElevatorStatus.java
