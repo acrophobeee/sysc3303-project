@@ -9,6 +9,7 @@ public class Elevator implements Runnable{
 	private long timeOfDoorOpen;
 	private static long TIMECHECKFORMOVE = 5000;
 	private static long TIMECHECKFORDOOROPEN = 5500;
+	private long operationCount, operationCount1;
 
 	public Elevator(int number, ElevatorSubsystem refSystem) {
 		elenumber = number;
@@ -18,8 +19,10 @@ public class Elevator implements Runnable{
 		timeOfElevatorMoving = 2000;
 		timeOfDoorOpen = 5000;
 		subsystem.statusUpdate(elenumber, currentfloor, state);
+		operationCount=0;
 	}
-	
+
+
 	/**
 	 * The elevator perform the action
 	 * 
@@ -30,7 +33,18 @@ public class Elevator implements Runnable{
 			state = new idle();
 			subsystem.statusUpdate(elenumber, currentfloor, state);
 		} else if (order == 1) {
-			TimeChecking tm = new TimeChecking(TIMECHECKFORMOVE, "move", this);
+			TimeChecking tm;
+			if(elenumber==3) {
+				operationCount++;
+				if(operationCount==2) {
+					timeOfElevatorMoving=6000;
+					 tm= new TimeChecking(timeOfElevatorMoving,"move", this);
+				}
+				tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
+			}else {
+				 tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
+			}
+			
 			Thread temp = new Thread(tm, "Timer");
 			temp.start();
 			state = new Upmode();
@@ -39,7 +53,19 @@ public class Elevator implements Runnable{
 			tm.actionFinish();
 			currentfloor++;
 		} else if (order == 2) {
-			TimeChecking tm = new TimeChecking(TIMECHECKFORMOVE, "move", this);
+			TimeChecking tm;
+			if(elenumber==1) {
+				operationCount1++;
+				if(operationCount1==2) {
+					timeOfElevatorMoving=6000;
+					 tm= new TimeChecking(timeOfElevatorMoving,"move", this);
+				}
+				tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
+			}else {
+				 tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
+			}
+			
+			
 			Thread temp = new Thread(tm, "Timer");
 			temp.start();
 			state = new Downmode();
@@ -48,7 +74,15 @@ public class Elevator implements Runnable{
 			tm.actionFinish();
 			currentfloor--;
 		} else if (order == 3) {
-			TimeChecking tm = new TimeChecking(TIMECHECKFORDOOROPEN,"open", this);
+			TimeChecking tm;
+			operationCount++;
+			if(operationCount==2 && elenumber==2) {
+				timeOfDoorOpen=6000;
+				 tm= new TimeChecking(timeOfDoorOpen,"open", this);
+			}else {
+				 tm = new TimeChecking(TIMECHECKFORDOOROPEN,"open", this);
+			}
+			
 			Thread temp = new Thread(tm, "Timer");
 			temp.start();
 			state = new DoorOpen();
@@ -58,6 +92,7 @@ public class Elevator implements Runnable{
 		} else {
 			System.out.println("ERROR!!!!!!!!!!");
 		}
+		
 		
 	}
 	
