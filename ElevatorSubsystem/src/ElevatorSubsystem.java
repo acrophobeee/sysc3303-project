@@ -34,6 +34,9 @@ public class ElevatorSubsystem {
 	 * @return Return 0 for elevator wait, 1 for elevator up, -1 for elevator down
 	 */
 	public int elevatorAction(int elenumber, int currentfloor, Elevatorstate state) {
+		if (state instanceof Shutdown) {
+			return -1;
+		}
 		int destination = 0;
 		while (order.isEmpty()) {
 			if (elevator.getState() == 0) {
