@@ -26,10 +26,11 @@ Running Instructions:
 Files included:
 1)ElevatorSubsystem.java
 2)Elevator.java
-3)ElevatorSubsystem.java
+3)ElevatorSubsystemTest.java
 4)idle.java
 5)Downmode.java
 6)Upmode.java
+<<<<<<< HEAD
 7)ReceiveSocket.java
 
 8)Scheduler.java
@@ -39,6 +40,23 @@ Files included:
 11)FloorSubsystem.java
 12)FloorUser.java
 13)TestFile.java
+=======
+7)DoorOpen.java
+8)ElevatorControlSystem.java
+9)Elevatorstate.java
+10)ReceiveSocket.java
+11)Shutdown.java
+12)TimeChecking.java
+
+13)Scheduler.java
+14)ElevatorStatus.java
+15)ElevatorRequest.java
+16)ElevatorStatueTest.java
+
+17)FloorSubsystem.java
+18)FloorUser.java
+19)TextFile.java
+>>>>>>> origin/tongdan
 
 
 Port:	
