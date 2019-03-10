@@ -9,7 +9,7 @@ public class Elevator implements Runnable{
 	private long timeOfDoorOpen;
 	private static long TIMECHECKFORMOVE = 5000;
 	private static long TIMECHECKFORDOOROPEN = 5500;
-	private long operationCount, operationCount1;
+	private long operationCount, operationCount1, operationCount2;
 
 	public Elevator(int number, ElevatorSubsystem refSystem) {
 		elenumber = number;
@@ -75,13 +75,19 @@ public class Elevator implements Runnable{
 			currentfloor--;
 		} else if (order == 3) {
 			TimeChecking tm;
-			operationCount++;
-			if(operationCount==2 && elenumber==2) {
-				timeOfDoorOpen=6000;
-				 tm= new TimeChecking(timeOfDoorOpen,"open", this);
+			if(elenumber==2) {
+				operationCount2++;
+				System.out.println("ele: "+ elenumber+" operation " + operationCount2);
+				if(operationCount2==1) {
+					timeOfDoorOpen=6000;
+					 tm= new TimeChecking(timeOfDoorOpen,"open", this);
+				}else {
+					 tm = new TimeChecking(TIMECHECKFORDOOROPEN,"open", this);
+				}
 			}else {
 				 tm = new TimeChecking(TIMECHECKFORDOOROPEN,"open", this);
 			}
+			
 			
 			Thread temp = new Thread(tm, "Timer");
 			temp.start();
