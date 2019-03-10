@@ -42,8 +42,8 @@ Files included:
 
 
 15)FloorSubsystem.java
-10)FloorUser.java
-11)TextFile.java
+16)FloorUser.java
+17)TextFile.java
 
 
 Port:	
