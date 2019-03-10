@@ -37,15 +37,14 @@ Files included:
 11)Shutdown.java
 12)TimeChecking.java
 
-11)Scheduler.java
-12)ElevatorStatus.java
-13)ElevatorRequest.java
-14)ElevatorStatueTest.java
+13)Scheduler.java
+14)ElevatorStatus.java
+15)ElevatorRequest.java
+16)ElevatorStatueTest.java
 
-
-15)FloorSubsystem.java
-16)FloorUser.java
-17)TextFile.java
+17)FloorSubsystem.java
+18)FloorUser.java
+19)TextFile.java
 
 
 Port:	
