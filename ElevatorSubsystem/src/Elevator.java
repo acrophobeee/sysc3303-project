@@ -4,12 +4,19 @@ public class Elevator implements Runnable{
 	private int currentfloor;
 	private Elevatorstate state;
 	private ElevatorSubsystem subsystem;
+	
+	private long timeOfElevatorMoving;
+	private long timeOfDoorOpen;
+	private static long TIMECHECKFORMOVE = 5000;
+	private static long TIMECHECKFORDOOROPEN = 5500;
 
 	public Elevator(int number, ElevatorSubsystem refSystem) {
 		elenumber = number;
 		subsystem = refSystem;
 		currentfloor = 1;
 		state = new idle();
+		timeOfElevatorMoving = 2000;
+		timeOfDoorOpen = 5000;
 		subsystem.statusUpdate(elenumber, currentfloor, state);
 	}
 	
@@ -23,19 +30,31 @@ public class Elevator implements Runnable{
 			state = new idle();
 			subsystem.statusUpdate(elenumber, currentfloor, state);
 		} else if (order == 1) {
+			TimeChecking tm = new TimeChecking(TIMECHECKFORMOVE, "move", this);
+			Thread temp = new Thread(tm, "Timer");
+			temp.start();
 			state = new Upmode();
 			subsystem.statusUpdate(elenumber, currentfloor, state);
-			execute(2000);
+			execute(timeOfElevatorMoving);
+			tm.actionFinish();
 			currentfloor++;
 		} else if (order == 2) {
+			TimeChecking tm = new TimeChecking(TIMECHECKFORMOVE, "move", this);
+			Thread temp = new Thread(tm, "Timer");
+			temp.start();
 			state = new Downmode();
 			subsystem.statusUpdate(elenumber, currentfloor, state);
-			execute(2000);
+			execute(timeOfElevatorMoving);
+			tm.actionFinish();
 			currentfloor--;
 		} else if (order == 3) {
+			TimeChecking tm = new TimeChecking(TIMECHECKFORDOOROPEN,"open", this);
+			Thread temp = new Thread(tm, "Timer");
+			temp.start();
 			state = new DoorOpen();
 			subsystem.statusUpdate(elenumber, currentfloor, state);
-			execute(5000);
+			execute(timeOfDoorOpen);
+			tm.actionFinish();
 		} else {
 			System.out.println("ERROR!!!!!!!!!!");
 		}
@@ -54,6 +73,11 @@ public class Elevator implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void emegencyShutdown() {
+		state = new Shutdown();
+		subsystem.statusUpdate(elenumber, currentfloor, state);
 	}
 	
 	/**
@@ -84,7 +108,9 @@ public class Elevator implements Runnable{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
+			if (moveOrder == -1) {
+				break;
+			}
 			move(moveOrder);
 		}
 	}

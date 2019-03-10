@@ -73,6 +73,9 @@ public class ElevatorControlSystem {
 		} else if (state instanceof DoorOpen) {
 			mode[0] = (byte) 0;
 			mode[1] = (byte) 4;
+		} else if (state instanceof Shutdown) {
+			mode[0] = (byte) 9;
+			mode[1] = (byte) 9;
 		}
 
 		byte floor[] = new byte[2];

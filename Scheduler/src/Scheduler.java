@@ -336,7 +336,7 @@ public class Scheduler {
 		} else if (temp == 4) {
 			return "door open";
 		}
-		return "unknown";
+		return "shutdown";
 	}
 	
 	
