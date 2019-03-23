@@ -22,6 +22,13 @@ public class ElevatorSubsystem {
 		t.start();
 	}
 	
+	/**
+	 * Update the elevator status to scheduler
+	 * 
+	 * @param elenumber Elevator number
+	 * @param currentfloor Current floor
+	 * @param state Elevator state
+	 */
 	public void statusUpdate(int elenumber, int currentfloor, Elevatorstate state) {
 		controlSystem.updateElevator(elenumber, currentfloor, state);
 	}

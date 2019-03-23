@@ -9,7 +9,7 @@ public class Elevator implements Runnable{
 	private long timeOfDoorOpen;
 	private static long TIMECHECKFORMOVE = 5000;
 	private static long TIMECHECKFORDOOROPEN = 5500;
-	private long operationCount, operationCount1;
+	private long operationCount, operationCount1, operationCount2;
 
 	public Elevator(int number, ElevatorSubsystem refSystem) {
 		elenumber = number;
@@ -34,16 +34,16 @@ public class Elevator implements Runnable{
 			subsystem.statusUpdate(elenumber, currentfloor, state);
 		} else if (order == 1) {
 			TimeChecking tm;
-			if(elenumber==3) {
-				operationCount++;
-				if(operationCount==2) {
-					timeOfElevatorMoving=6000;
-					 tm= new TimeChecking(timeOfElevatorMoving,"move", this);
-				}
-				tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
-			}else {
+//			if(elenumber==3) {
+//				operationCount++;
+//				if(operationCount==2) {
+//					timeOfElevatorMoving=6000;
+//					 tm= new TimeChecking(timeOfElevatorMoving,"move", this);
+//				}
+//				tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
+//			}else {
 				 tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
-			}
+//			}
 			
 			Thread temp = new Thread(tm, "Timer");
 			temp.start();
@@ -54,16 +54,16 @@ public class Elevator implements Runnable{
 			currentfloor++;
 		} else if (order == 2) {
 			TimeChecking tm;
-			if(elenumber==1) {
-				operationCount1++;
-				if(operationCount1==2) {
-					timeOfElevatorMoving=6000;
-					 tm= new TimeChecking(timeOfElevatorMoving,"move", this);
-				}
-				tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
-			}else {
+//			if(elenumber==1) {
+//				operationCount1++;
+//				if(operationCount1==2) {
+//					timeOfElevatorMoving=6000;
+//					 tm= new TimeChecking(timeOfElevatorMoving,"move", this);
+//				}
+//				tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
+//			}else {
 				 tm = new TimeChecking(TIMECHECKFORMOVE,"move", this);
-			}
+//			}
 			
 			
 			Thread temp = new Thread(tm, "Timer");
@@ -75,17 +75,23 @@ public class Elevator implements Runnable{
 			currentfloor--;
 		} else if (order == 3) {
 			TimeChecking tm;
-			operationCount++;
-			if(operationCount==2 && elenumber==2) {
-				timeOfDoorOpen=6000;
-				 tm= new TimeChecking(timeOfDoorOpen,"open", this);
-			}else {
+//			if(elenumber==2) {
+//				operationCount2++;
+//				if(operationCount2==1) {
+//					timeOfDoorOpen=6000;
+//					 tm= new TimeChecking(timeOfDoorOpen,"open", this);
+//					 tm.start();
+//				}else {
+//					 tm = new TimeChecking(TIMECHECKFORDOOROPEN,"open", this);
+//				}
+//			}else {
 				 tm = new TimeChecking(TIMECHECKFORDOOROPEN,"open", this);
-			}
+//			}
 			
 			Thread temp = new Thread(tm, "Timer");
 			temp.start();
 			state = new DoorOpen();
+			
 			subsystem.statusUpdate(elenumber, currentfloor, state);
 			execute(timeOfDoorOpen);
 			tm.actionFinish();

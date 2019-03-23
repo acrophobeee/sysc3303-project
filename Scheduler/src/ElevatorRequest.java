@@ -4,18 +4,19 @@ public class ElevatorRequest {
 	private int destination; // the destination floor
 	private String direction; 
 	private byte data[];
+	private long performanceTime;
 	
 	/**
-	 * 
 	 * @param currect
 	 * @param destination
 	 * @param direction
 	 */
-	public ElevatorRequest(int currect, int destination, String direction, byte data[]) {
+	public ElevatorRequest(int currect, int destination, String direction, byte data[], long performanceTime) {
 		this.currect = currect;
 		this.destination = destination;
 		this.direction = direction;
 		this.data = data;
+		this.performanceTime = performanceTime;
 	}
 	
 	/**
@@ -52,5 +53,14 @@ public class ElevatorRequest {
 	 */
 	public byte[] getRequestData() {
 		return data;
+	}
+	
+	/**
+	 * Return the performance time for fast socket sending
+	 * 
+	 * @return the performance time
+	 */
+	public long getPerformanceTime() {
+		return performanceTime;
 	}
 }
