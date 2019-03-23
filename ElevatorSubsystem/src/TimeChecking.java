@@ -1,5 +1,5 @@
 
-public class TimeChecking implements Runnable {
+public class TimeChecking extends Thread {
 
 	private long elapsedTime;
 	private String type;
