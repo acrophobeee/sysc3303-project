@@ -54,6 +54,14 @@ public class FloorUser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		sendSocket(formattedDate, 9, down, 5);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		sendSocket(formattedDate, 4, up, 10);
 		try {
 			Thread.sleep(1000);
@@ -69,6 +77,7 @@ public class FloorUser {
 			e.printStackTrace();
 		}
 		sendSocket(formattedDate, 9, down, 5);
+		
 		
 		
 	}
