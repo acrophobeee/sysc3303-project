@@ -40,16 +40,16 @@ public class FloorSubsystem implements Runnable {
 //		System.out.println("From scheduler host: " + receivePacket.getAddress());
 //		System.out.println("Scheduler host port: " + receivePacket.getPort());
 		System.out.println("Elevator number: " + data[2] +"" +data[3]);
+		
 		if(data[5]==1) {
-			System.out.println("Elevator mode: " +"up");
+			System.out.println("Elevator mode: up");
 		}else if(data[5]==2) {
-			System.out.println("Elevator mode: " +"down");
+			System.out.println("Elevator mode: down");
 		}else if(data[5]==3) {
-			System.out.println("Elevator mode: " +"idle");
+			System.out.println("Elevator mode: idle");
 		}
 		
-		
-		System.out.println("Elevator current floow: " + data[6] +"" +data[7]);
+		System.out.println("Elevator current floor: " + data[6] +"" +data[7]);
 
 		// Form a String from the byte array.
 		System.out.println("Receiving finished. \n");

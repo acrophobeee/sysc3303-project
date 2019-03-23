@@ -91,6 +91,7 @@ public class Elevator implements Runnable{
 			Thread temp = new Thread(tm, "Timer");
 			temp.start();
 			state = new DoorOpen();
+			
 			subsystem.statusUpdate(elenumber, currentfloor, state);
 			execute(timeOfDoorOpen);
 			tm.actionFinish();

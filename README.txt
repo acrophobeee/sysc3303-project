@@ -30,17 +30,7 @@ Files included:
 4)idle.java
 5)Downmode.java
 6)Upmode.java
-<<<<<<< HEAD
-7)ReceiveSocket.java
 
-8)Scheduler.java
-9)ElevatorStatus.java
-10)ElevatorStatusTest.java
-
-11)FloorSubsystem.java
-12)FloorUser.java
-13)TestFile.java
-=======
 7)DoorOpen.java
 8)ElevatorControlSystem.java
 9)Elevatorstate.java
@@ -56,7 +46,6 @@ Files included:
 17)FloorSubsystem.java
 18)FloorUser.java
 19)TextFile.java
->>>>>>> origin/tongdan
 
 
 Port:	
