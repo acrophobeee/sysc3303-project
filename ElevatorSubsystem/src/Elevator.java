@@ -33,9 +33,12 @@ public class Elevator implements Runnable{
 			execute(2000);
 			currentfloor--;
 		} else if (order == 3) {
+			//-----------time
 			state = new DoorOpen();
+			
 			subsystem.statusUpdate(elenumber, currentfloor, state);
 			execute(5000);
+			//--------------time
 		} else {
 			System.out.println("ERROR!!!!!!!!!!");
 		}

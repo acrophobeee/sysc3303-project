@@ -197,6 +197,8 @@ public class Scheduler {
 		
 		String state = decodeState(mode);
 		
+		
+		
 		for (ElevatorStatus e : elevators) {
 			if (e.getNumber() == byteToInt(elevatorNum)) {
 				if (e.getState() != "idle" && e.getState() != state) {
@@ -336,7 +338,7 @@ public class Scheduler {
 		} else if (temp == 4) {
 			return "door open";
 		}
-		return "unknown";
+		return "shutdown";
 	}
 	
 	
