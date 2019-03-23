@@ -46,6 +46,13 @@ public class FloorUser {
 		String strDateFormat = "HH:mm:ss.mmm";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate= dateFormat.format(date);
+        try {
+        	System.out.println("waiting for initializing elevator. " );
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
 		sendSocket(formattedDate, 2, up, 5);
 		try {

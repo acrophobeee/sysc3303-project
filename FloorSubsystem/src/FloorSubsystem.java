@@ -24,7 +24,7 @@ public class FloorSubsystem implements Runnable {
 	public void receiveSocket() {
 		// Construct a DatagramPacket for receiving packets up
 		// to 100 bytes long (the length of the byte array).
-		System.out.println("Floor socket is running on port 23 and wait for packet: ");
+		
 		byte data[] = new byte[100];
 		receivePacket = new DatagramPacket(data, data.length);
 		
@@ -37,10 +37,18 @@ public class FloorSubsystem implements Runnable {
 		
 		// Process the received datagram.
 		System.out.println("Floor: Packet received:");
-		System.out.println("From scheduler host: " + receivePacket.getAddress());
-		System.out.println("Scheduler host port: " + receivePacket.getPort());
+//		System.out.println("From scheduler host: " + receivePacket.getAddress());
+//		System.out.println("Scheduler host port: " + receivePacket.getPort());
 		System.out.println("Elevator number: " + data[2] +"" +data[3]);
-		System.out.println("Elevator mode: " + data[4] +"" +data[5]);
+		if(data[5]==1) {
+			System.out.println("Elevator mode: " +"up");
+		}else if(data[5]==2) {
+			System.out.println("Elevator mode: " +"down");
+		}else if(data[5]==3) {
+			System.out.println("Elevator mode: " +"idle");
+		}
+		
+		
 		System.out.println("Elevator current floow: " + data[6] +"" +data[7]);
 
 		// Form a String from the byte array.
@@ -65,6 +73,7 @@ public class FloorSubsystem implements Runnable {
 			// send and receive UDP Datagram packets.
 			
 			receiveSocket = new DatagramSocket(23);//receive port is 23
+			System.out.println("Floor socket is running on port 23 and wait for packet: ");
 			while(true) {
 				receiveSocket();
 			}
