@@ -15,6 +15,8 @@ public class Scheduler {
 	DatagramSocket schedulerSocket;
 	private ArrayList<ElevatorStatus> elevators;
 	private ArrayList<ElevatorRequest> requests;
+	private long start, end;
+	private ArrayList<Double> timePerform;
 
 	public Scheduler() {
 		try {
@@ -30,7 +32,9 @@ public class Scheduler {
 		elevators.add(new ElevatorStatus(2));
 		elevators.add(new ElevatorStatus(3));
 		requests = new ArrayList<ElevatorRequest>();
-		
+		start = 0;
+		end = 0;
+		timePerform = new ArrayList<Double>();
 	}
 
 	/**
@@ -45,17 +49,16 @@ public class Scheduler {
 
 			byte data[] = new byte[50];
 			receivePacket = new DatagramPacket(data, data.length);
-			System.out.println("Scheduler: Waiting for Event.\n");
-			try {
-				System.out.println("Scheduler address: " + InetAddress.getLocalHost() + "\n");
-			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			System.out.println("Scheduler: Waiting for Event: ");
+//			try {
+//				System.out.println("Scheduler address: " + InetAddress.getLocalHost() + "\n");
+//			} catch (UnknownHostException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 
 			// Block until a datagram packet is received an event.
 			try {
-				System.out.println("Waiting..."); // so we know we're waiting
 				schedulerSocket.receive(receivePacket);
 			} catch (IOException e) {
 				System.out.print("IO Exception: likely:");
@@ -64,10 +67,12 @@ public class Scheduler {
 				System.exit(1);
 			}
 			
+			start = System.nanoTime();
+			
 			// Decode the received datagram.
 			System.out.println("Scheduler: Event received.");
-			System.out.println("From host: " + receivePacket.getAddress());
-			System.out.println("Host port: " + receivePacket.getPort());
+//			System.out.println("From host: " + receivePacket.getAddress());
+//			System.out.println("Host port: " + receivePacket.getPort());
 			int len = receivePacket.getLength();
 			
 			// Form a String from the byte array.
@@ -76,7 +81,7 @@ public class Scheduler {
 			for (byte b : data) {
 				temp.append(b);
 			}
-			System.out.println("Data in byte form : " + temp + "\n");
+//			System.out.println("Data in byte form: " + temp);
 			
 			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
 				floorRequest(data, received);
@@ -92,6 +97,8 @@ public class Scheduler {
 	 * @param received time from floor
 	 * */
 	public void floorRequest(byte data[], String received) {
+		
+		System.out.println("Scheduler: This event is floor request.");
 		
 		byte[] request0 = new byte[2];
 		byte[] request1 = new byte[2];
@@ -138,7 +145,8 @@ public class Scheduler {
 			System.arraycopy(request1, 0, requestStore, 0, request1.length);
 			System.arraycopy(request2, 0, requestStore, 2, request2.length);
 			System.arraycopy(timeByte, 0, requestStore, 4, timeByte.length);
-			requests.add(new ElevatorRequest(current, destination, direction, requestStore));
+			end = System.nanoTime();
+			requests.add(new ElevatorRequest(current, destination, direction, requestStore, end - start));
 			return;
 		}
 		
@@ -175,8 +183,14 @@ public class Scheduler {
 			e.printStackTrace();
 			System.exit(1);
 		}
-
-		System.out.println("Scheduler: Order sent.\n");
+		
+		end = System.nanoTime();
+		System.out.println("Scheduler: Request sent.");
+		System.out.println("Request is assigned to elevator " + elevatorNum);
+		double timeInSecond = (end - start);
+		System.out.println("Performance time: " + timeInSecond/1000000 + " milliseconds.\n");
+		timePerform.add(timeInSecond/1000000);
+		calculate();
 	}
 	
 	/**
@@ -185,6 +199,7 @@ public class Scheduler {
 	 * @param received time from elevator
 	 * */
 	public void elevatorUpdate(byte data[], String received) {
+		System.out.println("Scheduler: This event is elevator update.");
 		byte[] elevatorNum = new byte[2];
 		byte[] mode = new byte[2];
 		byte[] floor = new byte[2];
@@ -212,10 +227,10 @@ public class Scheduler {
 			}
 		}
 		
-		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
-		System.out.println("the mode is : " + state);
-		System.out.println("the floor is : " + byteToInt(floor));
-		System.out.println("the time is : " + received);
+//		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
+//		System.out.println("the mode is : " + state);
+//		System.out.println("the floor is : " + byteToInt(floor));
+//		System.out.println("the time is : " + received);
 		
 		try {
 			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
@@ -233,7 +248,7 @@ public class Scheduler {
 			System.exit(1);
 		}
 
-		System.out.println("Scheduler: Status sent.\n");
+		System.out.println("Scheduler: Update completed.\n");
 	}
 	
 	/**
@@ -256,7 +271,7 @@ public class Scheduler {
 			}
 			
 			// Sending request
-			continuteRequest(e.getNumber(), temp.getRequestData());
+			continuteRequest(e.getNumber(), temp.getRequestData(), temp.getPerformanceTime());
 			e.statusUpdate(e.getFloor(), temp.getDirection());
 			requests.remove(temp);
 		}
@@ -264,12 +279,12 @@ public class Scheduler {
 			if (r.getDirection() == e.getState()) {
 				if (e.getState() == "up" && e.getFloor() + 2 < r.getCurrentFloor()) {
 					// Sending request
-					continuteRequest(e.getNumber(), r.getRequestData());
+					continuteRequest(e.getNumber(), r.getRequestData(), r.getPerformanceTime());
 					e.statusUpdate(e.getFloor(), r.getDirection());
 					requests.remove(r);
 				} else if (e.getState() == "down" && e.getFloor() - 2 > r.getCurrentFloor())  {
 					// Sending request
-					continuteRequest(e.getNumber(), r.getRequestData());
+					continuteRequest(e.getNumber(), r.getRequestData(), r.getPerformanceTime());
 					e.statusUpdate(e.getFloor(), r.getDirection());
 					requests.remove(r);
 				}
@@ -282,7 +297,8 @@ public class Scheduler {
 	 * @param elevatorNum the number of elevator to be sent the request
 	 * @param the request data from client and send to elevator
 	 */
-	public void continuteRequest(int elevatorNum, byte data[]) {
+	public void continuteRequest(int elevatorNum, byte data[], long performanceTime) {
+		start = System.nanoTime();
 		byte request[] = new byte[18];
 		
 		byte num[] = new byte[2];
@@ -305,8 +321,14 @@ public class Scheduler {
 			e.printStackTrace();
 			System.exit(1);
 		}
-
-		System.out.println("Scheduler: Order sent.");
+		
+		end = System.nanoTime();
+		System.out.println("Scheduler: Request sent.");
+		System.out.println("Request is assigned to elevator " + elevatorNum);
+		double timeInSecond = (end - start + performanceTime);
+		System.out.println("Performance time: " + timeInSecond/1000000 + " milliseconds.\n");
+		timePerform.add(timeInSecond/1000000);
+		calculate();
 	}
 	
 	
@@ -341,6 +363,27 @@ public class Scheduler {
 		return "shutdown";
 	}
 	
+	/**
+	 * Print the mean time and variance of schduler requesting time
+	 */
+	public void calculate() {
+		double total = 0;
+		for (double i : timePerform) {
+			total += i;
+		}
+		double mean = total/timePerform.size();
+		System.out.println("Total mean time: " + mean + " milliseconds.");
+		
+		if (timePerform.size() > 1) {
+			double temp = 0;
+			
+			for (double i : timePerform) {
+				temp += Math.pow((i - mean), 2);
+			}
+			System.out.println("Variance: " + temp/(timePerform.size()-1));
+		}
+		System.out.println();
+	}
 	
 	public static void main(String args[]) {
 		Scheduler c = new Scheduler();
