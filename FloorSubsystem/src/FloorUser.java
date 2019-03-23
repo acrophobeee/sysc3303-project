@@ -21,7 +21,9 @@ public class FloorUser {
 	 * @desc construct a floor user
 	 * */
 	public FloorUser() {
-		FS = new FloorSubsystem();
+//		FS = ;
+		Thread t = new Thread(new FloorSubsystem(), "FloorSubsystem");
+		
 		
 		up = "up ";
 		down = "down ";		
@@ -31,6 +33,9 @@ public class FloorUser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		sendRequest();
+		t.start();
+		
 	}
 	
 	/**
@@ -156,6 +161,6 @@ public class FloorUser {
 	 * */
 	public static void main(String args[]) {
 		FloorUser FU = new FloorUser();
-		FU.sendRequest();
+//		FU.sendRequest();
 	}
 }

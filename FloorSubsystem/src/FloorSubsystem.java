@@ -10,29 +10,11 @@ import java.net.*;
 import java.util.*;
 
 
-public class FloorSubsystem {
+public class FloorSubsystem implements Runnable {
 
 	private DatagramPacket sendPacket, receivePacket;
 	private DatagramSocket sendSocket, receiveSocket;
 	private Date reqDate;
-	
-	/**
-	 * @desc Construct a floor subsystem
-	 * 
-	 */
-	public FloorSubsystem() {
-		try {
-			// Construct a datagram socket and bind it to any available
-			// port on the local host machine. This socket will be used to
-			// send and receive UDP Datagram packets.
-			
-			receiveSocket = new DatagramSocket(23);//receive port is 23
-		} catch (SocketException se) { // Can't create the socket.
-			se.printStackTrace();
-			System.exit(1);
-		}
-	}
-	
 	
 	/**
 	 * @desc receive an socket from scheduler, 
@@ -55,19 +37,16 @@ public class FloorSubsystem {
 		
 		// Process the received datagram.
 		System.out.println("Floor: Packet received:");
-		System.out.println("From host: " + receivePacket.getAddress());
-		System.out.println("Host port: " + receivePacket.getPort());
-		System.out.println("Length: " + receivePacket.getLength());
-		System.out.print("Containing: ");
+		System.out.println("From scheduler host: " + receivePacket.getAddress());
+		System.out.println("Scheduler host port: " + receivePacket.getPort());
+		System.out.println("Elevator number: " + data[2] +"" +data[3]);
+		System.out.println("Elevator mode: " + data[4] +"" +data[5]);
+		System.out.println("Elevator current floow: " + data[6] +"" +data[7]);
 
 		// Form a String from the byte array.
-		StringBuilder received = new StringBuilder();
-		for (byte b : data) {
-			received.append(b);
-		}
-		System.out.println(received + "\n");
-		receiveSocket();
+		System.out.println("Receiving finished. \n");
 		
+		receiveSocket();
 	}
 	/**
 	 * @desc terminate the client socket
@@ -75,14 +54,26 @@ public class FloorSubsystem {
 	public void stopClient() {
 		sendSocket.close();
 	}
-	
-	/**
-	 * @desc main
-	 * @param args
-	 */
-	public static void main(String args[]) {
-	    Date a = new Date();
-		FloorSubsystem c = new FloorSubsystem();
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		try {
+			// Construct a datagram socket and bind it to any available
+			// port on the local host machine. This socket will be used to
+			// send and receive UDP Datagram packets.
+			
+			receiveSocket = new DatagramSocket(23);//receive port is 23
+			while(true) {
+				receiveSocket();
+			}
+			
+		} catch (SocketException se) { // Can't create the socket.
+			se.printStackTrace();
+			System.exit(1);
+		}
+		
 	}
 
 }
