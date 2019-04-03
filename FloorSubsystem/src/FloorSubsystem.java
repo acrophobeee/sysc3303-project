@@ -107,17 +107,20 @@ public class FloorSubsystem implements Runnable {
 		panel.setLayout(new GridLayout(23, 4));
 		frame.add(panel, BorderLayout.CENTER);
 		buttons = new JButton[23][4];
-		for (int i = 22; i >0; i--) {
+		for (int i = 22; i >=0; i--) {
 			for (int j = 0; j < 4; ++j) {
 				buttons[i][j] = new JButton();
 				panel.add(buttons[i][j]);
 				if (i > 0) {
 					buttons[i][j].setText(i+"");;
-					buttons[i][j].setEnabled(false);
 				}
+				buttons[i][j].setEnabled(false);
 			}
 		}
-
+		buttons[0][0].setText("Elevator 1");
+		buttons[0][1].setText("Elevator 2");
+		buttons[0][2].setText("Elevator 3");
+		buttons[0][3].setText("Elevator 4");
 	}
 	
 	/**
