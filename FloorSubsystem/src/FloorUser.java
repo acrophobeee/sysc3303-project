@@ -102,7 +102,7 @@ public class FloorUser implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		sendSocket(formattedDate, 1, up, 5);
+		sendSocket(formattedDate, 1, up, 5);
 		
 		
 	}

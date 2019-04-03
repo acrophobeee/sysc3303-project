@@ -81,7 +81,7 @@ public class Scheduler {
 			for (byte b : data) {
 				temp.append(b);
 			}
-			System.out.println("Data in byte form: " + temp);
+//			System.out.println("Data in byte form: " + temp);
 			
 			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
 				floorRequest(data, received);
@@ -147,6 +147,7 @@ public class Scheduler {
 			System.arraycopy(timeByte, 0, requestStore, 4, timeByte.length);
 			end = System.nanoTime();
 			requests.add(new ElevatorRequest(current, destination, direction, requestStore, end - start));
+			System.out.println("Request wait +++++++++++++++++++++");
 			return;
 		}
 //		System.out.println("Request send to elevator " + elevatorNum);
@@ -228,11 +229,10 @@ public class Scheduler {
 		
 		String state = decodeState(mode);
 		
-		
 		boolean exist = false;
 		for (ElevatorStatus e : elevators) {
 			if (e.getNumber() == byteToInt(elevatorNum)) {
-				if (e.getState() != "idle" && e.getState() != state) {
+				if (e.getState() == "idle" || e.getState() != state) {
 					e.statusUpdate(byteToInt(floor), state);
 					checkAllRequest(e);
 				} else {
@@ -279,9 +279,15 @@ public class Scheduler {
 			
 			// Sending request
 			continuteRequest(e.getNumber(), temp.getRequestData(), temp.getPerformanceTime());
-			e.statusUpdate(e.getFloor(), temp.getDirection());
+			if (e.getFloor() < temp.getCurrentFloor() || (e.getFloor() == temp.getCurrentFloor() && e.getFloor() < temp.getDestination())) {
+				e.statusUpdate(e.getFloor(), "up");
+			} else {
+				e.statusUpdate(e.getFloor(), "down");
+			}
 			requests.remove(temp);
 		}
+		System.out.println("Elevator set to: floor: " + e.getFloor() + " direction: " + e.getState());
+		
 		ArrayList<ElevatorRequest> tempArray = new ArrayList<ElevatorRequest>();
 		for (ElevatorRequest r : requests) {
 			if (r.getDirection() == e.getState()) {
@@ -310,6 +316,7 @@ public class Scheduler {
 	 */
 	public void continuteRequest(int elevatorNum, byte data[], long performanceTime) {
 //		System.out.println("Request send to elevator " + elevatorNum);
+		System.out.println("Request continue ++++++++++++++++++++");
 		start = System.nanoTime();
 		byte request[] = new byte[18];
 		
