@@ -30,7 +30,6 @@ Files included:
 4)idle.java
 5)Downmode.java
 6)Upmode.java
-
 7)DoorOpen.java
 8)ElevatorControlSystem.java
 9)Elevatorstate.java
@@ -72,3 +71,10 @@ Data Format:
 		byte 2-3: user current floor
 		byte 4-5: destination floor
 		byte 6-30: time
+	
+	Packet send from scheduler to Floor:
+        		byte 0-1: 01 fix number
+		byte 2-3: elevator number (01=elevator-1)
+		byte 4-5: elevator currern mode (01 up , 02 down , 03 idle)
+		byte 6-7: elevator floor
+		byte 8-35: time 
