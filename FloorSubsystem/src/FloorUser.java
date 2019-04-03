@@ -23,7 +23,7 @@ public class FloorUser {
 	public FloorUser() {
 //		FS = ;
 		Thread t = new Thread(new FloorSubsystem(), "FloorSubsystem");
-		
+		t.start();
 		
 		up = "up ";
 		down = "down ";		
@@ -34,7 +34,7 @@ public class FloorUser {
 			e.printStackTrace();
 		}
 		sendRequest();
-		t.start();
+		
 		
 	}
 	
@@ -54,7 +54,7 @@ public class FloorUser {
 			e.printStackTrace();
 		}
         
-		sendSocket(formattedDate, 2, up, 5);
+		sendSocket(formattedDate, 1, up, 5);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -62,21 +62,21 @@ public class FloorUser {
 			e.printStackTrace();
 		}
 		
-		sendSocket(formattedDate, 9, down, 5);
+		sendSocket(formattedDate, 1, up, 6);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendSocket(formattedDate, 4, up, 10);
+		sendSocket(formattedDate, 1, up, 7);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendSocket(formattedDate, 5, up, 9);		
+		sendSocket(formattedDate, 1, up, 8);		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {

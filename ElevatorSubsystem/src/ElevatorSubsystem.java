@@ -96,7 +96,6 @@ public class ElevatorSubsystem {
 						break;
 					}
 				}
-
 				// insert user's destination to the list
 				for (int i = 0; i < order.size(); i++) {
 					System.out.println(order.get(i));
@@ -139,6 +138,10 @@ public class ElevatorSubsystem {
 				}
 			}
 		}
-		
+		System.out.print("Order: ");
+		for (int i : order) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
 	}
 }
