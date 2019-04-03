@@ -137,8 +137,8 @@ public class FloorUser {
 		System.out.println("request: "+requestString);
 
 		try {
-			InetAddress addr = InetAddress.getByName("134.117.59.70");
-			sendPacket = new DatagramPacket(request, request.length, addr, 3000);
+//			InetAddress addr = InetAddress.getByName("134.117.59.70");
+			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost() , 3000);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
