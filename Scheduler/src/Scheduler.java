@@ -241,6 +241,8 @@ public class Scheduler {
 		System.out.println("the time is : " + received);
 		
 		try {
+			InetAddress addr = InetAddress.getByName("134.117.59.65");
+//			sendPacket = new DatagramPacket(data, data.length, addr, 23);
 			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
