@@ -201,6 +201,21 @@ public class Scheduler {
 	 * */
 	public void elevatorUpdate(byte data[], String received) {
 		System.out.println("Scheduler: This event is elevator update.");
+		
+		try {
+			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		try {
+			schedulerSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 		byte[] elevatorNum = new byte[2];
 		byte[] mode = new byte[2];
 		byte[] floor = new byte[2];
@@ -239,22 +254,6 @@ public class Scheduler {
 		System.out.println("the mode is : " + state);
 		System.out.println("the floor is : " + byteToInt(floor));
 		System.out.println("the time is : " + received);
-		
-		try {
-			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		
-		
-		
-		try {
-			schedulerSocket.send(sendPacket);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
 
 		System.out.println("Scheduler: Update completed.\n");
 	}
@@ -372,6 +371,8 @@ public class Scheduler {
 			return "idle";
 		} else if (temp == 4) {
 			return "door open";
+		} else if (temp == 5) {
+			return "door block";
 		}
 		return "shutdown";
 	}

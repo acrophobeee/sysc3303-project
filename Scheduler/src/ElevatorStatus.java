@@ -70,7 +70,7 @@ public class ElevatorStatus {
 	 * @param state the new elevator state
 	 */
 	public void setState(String state) {
-		if (state.equals("idle") || state.equals("up") || state.equals("down")) {
+		if (state.equals("idle") || state.equals("up") || state.equals("down") || state.equals("shut down")) {
 			this.state = state;
 		}
 	}
