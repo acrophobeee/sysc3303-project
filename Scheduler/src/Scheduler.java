@@ -81,7 +81,7 @@ public class Scheduler {
 			for (byte b : data) {
 				temp.append(b);
 			}
-//			System.out.println("Data in byte form: " + temp);
+			System.out.println("Data in byte form: " + temp);
 			
 			if (data[0] == (byte) 0 && data[1] == (byte) 0) {
 				floorRequest(data, received);
@@ -275,20 +275,24 @@ public class Scheduler {
 			e.statusUpdate(e.getFloor(), temp.getDirection());
 			requests.remove(temp);
 		}
+		ArrayList<ElevatorRequest> tempArray = new ArrayList<ElevatorRequest>();
 		for (ElevatorRequest r : requests) {
 			if (r.getDirection() == e.getState()) {
 				if (e.getState() == "up" && e.getFloor() + 2 < r.getCurrentFloor()) {
 					// Sending request
 					continuteRequest(e.getNumber(), r.getRequestData(), r.getPerformanceTime());
 					e.statusUpdate(e.getFloor(), r.getDirection());
-					requests.remove(r);
+					tempArray.add(r);
 				} else if (e.getState() == "down" && e.getFloor() - 2 > r.getCurrentFloor())  {
 					// Sending request
 					continuteRequest(e.getNumber(), r.getRequestData(), r.getPerformanceTime());
 					e.statusUpdate(e.getFloor(), r.getDirection());
-					requests.remove(r);
+					tempArray.add(r);
 				}
 			}
+		}
+		for (ElevatorRequest r : tempArray) {
+			requests.remove(r);
 		}
 	}
 	
