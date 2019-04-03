@@ -54,6 +54,14 @@ public class FloorUser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		sendSocket(formattedDate, 9, down, 5);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		sendSocket(formattedDate, 4, up, 10);
 		try {
 			Thread.sleep(1000);
@@ -69,6 +77,7 @@ public class FloorUser {
 			e.printStackTrace();
 		}
 		sendSocket(formattedDate, 9, down, 5);
+		
 		
 		
 	}
@@ -128,7 +137,8 @@ public class FloorUser {
 		System.out.println("request: "+requestString);
 
 		try {
-			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 3000);
+			InetAddress addr = InetAddress.getByName("134.117.59.70");
+			sendPacket = new DatagramPacket(request, request.length, addr, 3000);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
