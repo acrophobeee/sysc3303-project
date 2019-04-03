@@ -250,10 +250,10 @@ public class Scheduler {
 			System.out.println("New elevator " + byteToInt(elevatorNum) + " added");
 		}
 		
-		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
-		System.out.println("the mode is : " + state);
-		System.out.println("the floor is : " + byteToInt(floor));
-		System.out.println("the time is : " + received);
+//		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
+//		System.out.println("the mode is : " + state);
+//		System.out.println("the floor is : " + byteToInt(floor));
+//		System.out.println("the time is : " + received);
 
 		System.out.println("Scheduler: Update completed.\n");
 	}
