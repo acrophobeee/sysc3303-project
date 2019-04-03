@@ -1,3 +1,9 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GraphicsConfiguration;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,7 +14,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FloorUser {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class FloorUser implements ActionListener {
 	private Date date;
 	private int toFloor = 0;
 	private FloorSubsystem FS;
@@ -16,6 +26,7 @@ public class FloorUser {
 	
 	private DatagramSocket sendSocket;
 	private DatagramPacket sendPacket;
+	
 	
 	/**
 	 * @desc construct a floor user
@@ -33,10 +44,11 @@ public class FloorUser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendRequest();
+		sendRequest();		
 		
 		
 	}
+	
 	
 	/**
 	 * @desc send request to the FloorSubsystem
@@ -90,7 +102,7 @@ public class FloorUser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendSocket(formattedDate, 1, up, 5);
+//		sendSocket(formattedDate, 1, up, 5);
 		
 		
 	}
@@ -185,5 +197,11 @@ public class FloorUser {
 	public static void main(String args[]) {
 		FloorUser FU = new FloorUser();
 //		FU.sendRequest();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
