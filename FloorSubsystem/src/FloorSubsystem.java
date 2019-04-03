@@ -24,7 +24,7 @@ public class FloorSubsystem implements Runnable {
 	public void receiveSocket() {
 		// Construct a DatagramPacket for receiving packets up
 		// to 100 bytes long (the length of the byte array).
-		System.out.println("Floor socket is running on port 23 and wait for packet: ");
+		
 		byte data[] = new byte[100];
 		receivePacket = new DatagramPacket(data, data.length);
 		
@@ -73,6 +73,7 @@ public class FloorSubsystem implements Runnable {
 			// send and receive UDP Datagram packets.
 			
 			receiveSocket = new DatagramSocket(23);//receive port is 23
+			System.out.println("Floor socket is running on port 23 and wait for packet: ");
 			while(true) {
 				receiveSocket();
 			}
