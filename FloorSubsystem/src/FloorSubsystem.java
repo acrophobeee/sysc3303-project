@@ -102,11 +102,11 @@ public class FloorSubsystem implements Runnable {
 	 * */
 	public void addDisplayBox() {
 		panel = new JPanel();
-		panel.setLayout(new GridLayout(23, 3));
+		panel.setLayout(new GridLayout(23, 4));
 		frame.add(panel, BorderLayout.CENTER);
-		buttons = new JButton[23][3];
+		buttons = new JButton[23][4];
 		for (int i = 22; i >0; i--) {
-			for (int j = 0; j < 3; ++j) {
+			for (int j = 0; j < 4; ++j) {
 				buttons[i][j] = new JButton();
 				panel.add(buttons[i][j]);
 				if (i > 0) {
@@ -158,7 +158,7 @@ public class FloorSubsystem implements Runnable {
 		elevatorNumber--;
 		Color suitableColor = findColor(status);
 		for(int i = 22; i >0; --i) {
-			for(int j = 0; j < 3; ++j) {
+			for(int j = 0; j < 4; ++j) {
 				if(elevatorNumber==j && currentFloor==i) {
 					buttons[i][j].setBackground(suitableColor);
 				}else if(j==elevatorNumber) {
