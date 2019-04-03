@@ -76,16 +76,16 @@ public class ElevatorSubsystem {
 	public void putNewRequest(int currFloor, int destination) {
 		System.out.println("Elevator "+eleNum+" received task from: " + currFloor + " to " + destination);
 		elevatorMode = elevator.getState();
-		if (order.isEmpty() || elevatorMode==0) {
+		if (order.isEmpty() || elevatorMode==0) { //elevatorMode=0, idle
 			order.add(0, currFloor);
 			order.add(1, destination);
 		} else {
 			System.out.println(elevatorMode);
-			if (elevatorMode == 1) {
-
+			if (elevatorMode == 1) { //elevatorMode=1, upMode
 				// insert user's current floor to the list
 				for (int i = 0; i < order.size(); i++) {
-					System.out.println(order.get(i));
+					// check if the elevator has a changing direction
+					// or check has reach the end of the floor list
 					if (order.get(i) > order.get(i + 1) || order.size() == i) {
 						order.add(i, currFloor);						
 					}
@@ -96,12 +96,12 @@ public class ElevatorSubsystem {
 						break;
 					}
 				}
-
 				// insert user's destination to the list
 				for (int i = 0; i < order.size(); i++) {
-					System.out.println(order.get(i));
-					if (order.get(i) > order.get(i + 1) || order.size() - 1 == i) {
-						order.add(i, currFloor);
+					// check if the elevator has a changing direction
+					// or check has reach the end of the floor list
+					if (order.get(i) > order.get(i + 1) || order.size()-1 == i) {
+						order.add(i, destination);
 					}
 					if (destination < order.get(i)) {
 						order.add(i, destination);
@@ -139,6 +139,10 @@ public class ElevatorSubsystem {
 				}
 			}
 		}
-		
+		System.out.print("Order: ");
+		for (int i : order) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
 	}
 }

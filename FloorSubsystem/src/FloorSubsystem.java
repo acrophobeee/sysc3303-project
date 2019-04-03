@@ -61,6 +61,8 @@ public class FloorSubsystem implements Runnable {
 			System.out.println("Elevator mode: down");
 		}else if(data[5]==3) {
 			System.out.println("Elevator mode: idle");
+		}else if(data[5]==4) {
+			System.out.println("Elevator mode: door open");
 		}
 		if(elevatorMode==3) {
 			updateDisplay(elevatorNumber, currentFloor, elevatorMode);

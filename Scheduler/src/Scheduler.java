@@ -28,9 +28,9 @@ public class Scheduler {
 			System.exit(1);
 		}
 		elevators = new ArrayList<ElevatorStatus>();
-		elevators.add(new ElevatorStatus(1));
-		elevators.add(new ElevatorStatus(2));
-		elevators.add(new ElevatorStatus(3));
+//		elevators.add(new ElevatorStatus(1));
+//		elevators.add(new ElevatorStatus(2));
+//		elevators.add(new ElevatorStatus(3));
 		requests = new ArrayList<ElevatorRequest>();
 		start = 0;
 		end = 0;
@@ -149,6 +149,7 @@ public class Scheduler {
 			requests.add(new ElevatorRequest(current, destination, direction, requestStore, end - start));
 			return;
 		}
+//		System.out.println("Request send to elevator " + elevatorNum);
 		
 		for (ElevatorStatus e : elevators) {
 			if (e.getNumber() == elevatorNum) {
@@ -213,7 +214,7 @@ public class Scheduler {
 		String state = decodeState(mode);
 		
 		
-		
+		boolean exist = false;
 		for (ElevatorStatus e : elevators) {
 			if (e.getNumber() == byteToInt(elevatorNum)) {
 				if (e.getState() != "idle" && e.getState() != state) {
@@ -222,15 +223,22 @@ public class Scheduler {
 				} else {
 					e.statusUpdate(byteToInt(floor), state);
 				}
-				
+				exist = true;
 				break;
 			}
 		}
 		
-//		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
-//		System.out.println("the mode is : " + state);
-//		System.out.println("the floor is : " + byteToInt(floor));
-//		System.out.println("the time is : " + received);
+		if (!exist) {
+			ElevatorStatus newElevater = new ElevatorStatus(byteToInt(elevatorNum));
+			newElevater.statusUpdate(byteToInt(elevatorNum), state);
+			elevators.add(newElevater);
+			System.out.println("New elevator " + byteToInt(elevatorNum) + " added");
+		}
+		
+		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
+		System.out.println("the mode is : " + state);
+		System.out.println("the floor is : " + byteToInt(floor));
+		System.out.println("the time is : " + received);
 		
 		try {
 			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
@@ -302,6 +310,7 @@ public class Scheduler {
 	 * @param the request data from client and send to elevator
 	 */
 	public void continuteRequest(int elevatorNum, byte data[], long performanceTime) {
+//		System.out.println("Request send to elevator " + elevatorNum);
 		start = System.nanoTime();
 		byte request[] = new byte[18];
 		
