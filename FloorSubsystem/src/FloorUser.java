@@ -57,6 +57,13 @@ public class FloorUser implements ActionListener {
 		String strDateFormat = "HH:mm:ss.mmm";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate= dateFormat.format(date);
+        try {
+        	System.out.println("waiting for initializing elevator. " );
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
 		sendSocket(formattedDate, 2, up, 5);
 		try {
@@ -87,7 +94,16 @@ public class FloorUser implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendSocket(formattedDate, 9, down, 5);		
+		sendSocket(formattedDate, 9, down, 5);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sendSocket(formattedDate, 1, up, 5);
+		
+		
 	}
 	
 	/**

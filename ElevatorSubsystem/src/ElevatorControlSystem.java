@@ -13,7 +13,7 @@ public class ElevatorControlSystem {
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket;
 	
-	private ElevatorSubsystem E1, E2, E3;
+	private ElevatorSubsystem E1, E2, E3, E4;
 	public Elevator elevator;
 	private Date date;
 	private Thread receiveS;
@@ -27,6 +27,7 @@ public class ElevatorControlSystem {
 			E1 = new ElevatorSubsystem(1, this);
 			E2 = new ElevatorSubsystem(2, this);
 			E3 = new ElevatorSubsystem(3, this);
+			E4 = new ElevatorSubsystem(4, this);
 			receiveS = new Thread(new ReceiveSocket(this), "ReceiveSocket");
 			// Construct a datagram socket and bind it to port 5000
 			// on the local host machine. This socket will be used to
@@ -114,8 +115,10 @@ public class ElevatorControlSystem {
 			return E1;
 		} else if (car == 2) {
 			return E2;
-		} else {
+		} else if (car == 3){
 			return E3;
+		} else {
+			return E4;
 		}
 	}
 
@@ -143,6 +146,8 @@ public class ElevatorControlSystem {
 			E2.putNewRequest(currFloor, destination);	
 		} else if (carNum == 3) {
 			E3.putNewRequest(currFloor, destination);	
+		} else if (carNum == 4) {
+			E4.putNewRequest(currFloor, destination);	
 		}
 		
 	}
