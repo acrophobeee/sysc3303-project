@@ -64,11 +64,8 @@ public class FloorSubsystem implements Runnable {
 		}else if(data[5]==4) {
 			System.out.println("Elevator mode: door open");
 		}
-		if(elevatorMode==3) {
-			updateDisplay(elevatorNumber, currentFloor, elevatorMode);
-		}else {
-			updateDisplay(elevatorNumber, currentFloor, 1);
-		}
+		
+		updateDisplay(elevatorNumber, currentFloor, elevatorMode);
 		
 		System.out.println("Elevator current floor: " + currentFloor);
 
@@ -126,24 +123,23 @@ public class FloorSubsystem implements Runnable {
 	/**
 	 * @desc found the suitable color to display elevator's status
 	 * @param status: elevator's current status
-	 * Color: 1 - running (Green)
-	 * 		  2 - Stuck door (Red)
-	 * 		  3 - idle (Yellow) 		  
-	 * 		  4 - Stuck elevator (Orange)
-	 * 		  5 - door open (blue)
-	 * 		  else (white)
+	 * @param status: 1 or 2 - running (Green)
+	 * 		  		  3 - idle (YELLOW)
+	 * 				  4 - door open (BLUE)
+	 * 		  		  5 - Stuck door (ORANGE)
+	 * 		 		  6 - Stuck elevator (RED)
 	 * */
 	public Color findColor(int status) {
-		if(status==1) {
+		if(status==1 ||status==2) {
 			return Color.GREEN;
-		}else if(status==2) {
-			return Color.RED;
 		}else if(status==3) {
 			return Color.YELLOW;
 		}else if(status==4) {
+			return new Color(0, 255, 255);
+		}else if(status==5) {
 			return Color.ORANGE;
-		}else if(status==2) {
-			return Color.BLUE;
+		}else if(status==6) {
+			return Color.RED;
 		}else {
 			return Color.WHITE;
 		}
@@ -153,11 +149,12 @@ public class FloorSubsystem implements Runnable {
 	 * @desc update elevator's display block
 	 * @param elevatorNumver elevator number to be updated
 	 * @param current floor to be updated of the elevator
-	 * @param status: 1 - running
-	 * 		  		  2 - idle
-	 * 		  		  3 - Stuck door
-	 * 		 		  4 - Stuck elevator
-	 * 				  5 - door open
+	 * @param status: 1 or 2 - running
+	 * 		  		  3 - idle
+	 * 				  4 - door open
+	 * 		  		  5 - Stuck door
+	 * 		 		  6 - Stuck elevator
+	 * 				  
 	 * */
 	public void updateDisplay(int elevatorNumber, int currentFloor, int status) {
 		elevatorNumber--;
