@@ -114,6 +114,11 @@ public class FloorSubsystem implements Runnable {
 				buttons[i][j].setEnabled(false);
 			}
 		}
+		buttons[1][0].setBackground(Color.YELLOW);
+		buttons[1][1].setBackground(Color.YELLOW);
+		buttons[1][2].setBackground(Color.YELLOW);
+		buttons[1][3].setBackground(Color.YELLOW);
+		
 		buttons[0][0].setText("Elevator 1");
 		buttons[0][1].setText("Elevator 2");
 		buttons[0][2].setText("Elevator 3");

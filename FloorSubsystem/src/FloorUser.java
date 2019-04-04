@@ -178,7 +178,7 @@ public class FloorUser implements ActionListener {
 		System.out.println("request: "+requestString);
 
 		try {
-			InetAddress addr = InetAddress.getByName("134.117.59.65");
+			InetAddress addr = InetAddress.getByName("134.117.59.71");
 			sendPacket = new DatagramPacket(request, request.length, addr , 3000);
 //			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost() , 3000);
 			
@@ -199,7 +199,7 @@ public class FloorUser implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Client: Packet sent 1.\n");		
+		System.out.println("Client: Packet sent 1.\n");		   
 	}
 	
 	/**

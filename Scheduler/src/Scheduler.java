@@ -204,7 +204,8 @@ public class Scheduler {
 		System.out.println("Scheduler: This event is elevator update.");
 		
 		try {
-			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
+			InetAddress addr = InetAddress.getByName("134.117.59.70");
+			sendPacket = new DatagramPacket(data, data.length, addr, 23);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
