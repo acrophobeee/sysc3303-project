@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class ElevatorSubsystem {
 	private ElevatorControlSystem controlSystem;
-	private Elevator elevator;
+	public Elevator elevator;
 	private Date date;
 	private ArrayList<Integer> order;
 	private int elevatorMode;

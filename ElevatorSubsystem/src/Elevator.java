@@ -1,8 +1,8 @@
 
 public class Elevator implements Runnable{
-	private int elenumber;
+	public int elenumber;
 	private int currentfloor;
-	private Elevatorstate state;
+	public Elevatorstate state;
 	private ElevatorSubsystem subsystem;
 	
 	private long timeOfElevatorMoving;
@@ -26,7 +26,6 @@ public class Elevator implements Runnable{
 		subsystem.statusUpdate(elenumber, currentfloor, state);
 		operationCount=0;
 	}
-
 
 	/**
 	 * The elevator perform the action
