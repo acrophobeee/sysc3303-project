@@ -110,7 +110,6 @@ public class FloorUser implements ActionListener {
 			e.printStackTrace();
 		}		
 		
-		
 		sendSocket(formattedDate, 18, up, 1);
 		
 		try {
