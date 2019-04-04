@@ -143,7 +143,7 @@ public class FloorSubsystem implements Runnable {
 			return new Color(0, 255, 255);
 		}else if(status==5) {
 			return Color.ORANGE;
-		}else if(status==6) {
+		}else if(status==9) {
 			return Color.RED;
 		}else {
 			return Color.WHITE;
