@@ -62,7 +62,7 @@ Data Format:
 	Packet send from elevator to scheduler:
         		byte 0-1: 01 sent to scheduler 
 		byte 2-3: elevator number (01=elevator-1)
-		byte 4-5: elevator currern mode (01 up , 02 down , 03 idle, 04 door open, 05 door block, 06 shut down)
+		byte 4-5: elevator currern mode (01 up , 02 down , 03 idle, 04 door open, 05 door block, 99 shut down)
 		byte 6-7: elevator floor
 		byte 8-35: time 
 
