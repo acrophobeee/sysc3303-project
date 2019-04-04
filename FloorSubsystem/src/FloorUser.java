@@ -179,7 +179,7 @@ public class FloorUser implements ActionListener {
 
 		try {
 			InetAddress addr = InetAddress.getByName("134.117.59.65");
-			sendPacket = new DatagramPacket(request, request.length, addr , 3000);
+			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost() , 3000);
 //			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost() , 3000);
 			
 		} catch (UnknownHostException e) {

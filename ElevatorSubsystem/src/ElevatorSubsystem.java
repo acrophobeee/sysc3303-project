@@ -114,8 +114,12 @@ public class ElevatorSubsystem {
 				// insert user's current floor to the list
 				for (int i = 0; i < order.size(); i++) {
 					System.out.println(order.get(i));
-					if (order.get(i) < order.get(i + 1) || order.size() == i) {
+					if (order.size() == i ) {
 						order.add(i, destination);
+					} else if (order.get(i + 1) != null) {
+						if (order.get(i) < order.get(i + 1)) {
+							order.add(i, destination);
+						}
 					}
 					if (destination > order.get(i)) {
 						order.add(i + 1, destination);

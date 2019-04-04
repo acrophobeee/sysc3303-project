@@ -33,6 +33,7 @@ public class TimeChecking extends Thread {
 				e.emegencyShutdown();
 				System.out.println("Elevator is shutdown");
 			} else if (type == "open") {
+				e.doorIsBlock();
 				System.out.println("Please do not block the door.");
 			}
 		} 
