@@ -250,10 +250,28 @@ public class Scheduler {
 			System.out.println("New elevator " + byteToInt(elevatorNum) + " added");
 		}
 		
-//		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
-//		System.out.println("the mode is : " + state);
-//		System.out.println("the floor is : " + byteToInt(floor));
-//		System.out.println("the time is : " + received);
+		System.out.println("the elevator number is : " + byteToInt(elevatorNum));
+		System.out.println("the mode is : " + state);
+		System.out.println("the floor is : " + byteToInt(floor));
+		System.out.println("the time is : " + received);
+		
+		try {
+			InetAddress addr = InetAddress.getByName("134.117.59.65");
+//			sendPacket = new DatagramPacket(data, data.length, addr, 23);
+			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 23);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		
+		
+		try {
+			schedulerSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 
 		System.out.println("Scheduler: Update completed.\n");
 	}
