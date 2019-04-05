@@ -4,7 +4,7 @@ public class TimeChecking extends Thread {
 	private long elapsedTime;
 	private String type;
 	private Elevator e;
-	private boolean isFinished;
+	public boolean isFinished;
 
 	public TimeChecking(long i, String type, Elevator e) {
 		elapsedTime = i;

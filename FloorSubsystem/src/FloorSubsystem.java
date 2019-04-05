@@ -25,8 +25,8 @@ public class FloorSubsystem implements Runnable {
 	private Date reqDate;
 	
 	private static GraphicsConfiguration gc;
-	private JFrame frame;
-	private JPanel panel;
+	public JFrame frame;
+	public JPanel panel;
 	private JButton[][] buttons;
 	
 	/**

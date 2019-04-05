@@ -13,7 +13,7 @@ public class Scheduler {
 
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket schedulerSocket;
-	private ArrayList<ElevatorStatus> elevators;
+	public ArrayList<ElevatorStatus> elevators;
 	private ArrayList<ElevatorRequest> requests;
 	private long start, end;
 	private ArrayList<Double> timePerform;
