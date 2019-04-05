@@ -66,7 +66,7 @@ public class FloorUser implements ActionListener {
 			e.printStackTrace();
 		}
         
-		sendSocket(formattedDate, 3, up, 22);
+		sendSocket(formattedDate, 3, up, 21);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -81,21 +81,7 @@ public class FloorUser implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendSocket(formattedDate, 1, up, 7);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		sendSocket(formattedDate, 1, up, 8);		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		sendSocket(formattedDate, 9, down, 5);
+		sendSocket(formattedDate, 1, up, 9);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -108,9 +94,8 @@ public class FloorUser implements ActionListener {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
-		
-		sendSocket(formattedDate, 18, up, 1);
+		}	
+		sendSocket(formattedDate, 20, down, 1);
 		
 		try {
 			Thread.sleep(1000);
@@ -118,8 +103,22 @@ public class FloorUser implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		sendSocket(formattedDate, 19, up, 7);
+		sendSocket(formattedDate, 22, down, 7);
 		
+				
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+			
+		sendSocket(formattedDate, 1, up, 8);
+		
+		
+		
+	
 		
 	}
 	
@@ -178,7 +177,7 @@ public class FloorUser implements ActionListener {
 		System.out.println("request: "+requestString);
 
 		try {
-			InetAddress addr = InetAddress.getByName("134.117.59.71");
+			InetAddress addr = InetAddress.getByName("134.117.59.70");
 			sendPacket = new DatagramPacket(request, request.length, addr , 3000);
 //			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost() , 3000);
 			
