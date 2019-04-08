@@ -13,6 +13,9 @@ public class TimeChecking extends Thread {
 		isFinished = false;
 	}
 	
+	/**
+	 * Elevator is performed currectly
+	 */
 	public void actionFinish() {
 		isFinished = true;
 	}
