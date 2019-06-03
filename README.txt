@@ -72,3 +72,4 @@ Data Format:
 		byte 2-3: user current floor
 		byte 4-5: destination floor
 		byte 6-30: time
+//
