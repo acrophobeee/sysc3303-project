@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class Elevator implements Runnable{
 	public int elenumber;
@@ -9,7 +10,8 @@ public class Elevator implements Runnable{
 	private long timeOfDoorOpen;
 	private static long TIMECHECKFORMOVE = 5000;
 	private static long TIMECHECKFORDOOROPEN = 5500;
-	private long operationCount, operationCount1, operationCount2;
+	private Random r = new Random();
+	private int ranFloor, ranBlock, ranShutdown;
 
 	public Elevator(int number, ElevatorSubsystem refSystem) {
 		elenumber = number;
@@ -18,13 +20,14 @@ public class Elevator implements Runnable{
 		state = new idle();
 		timeOfElevatorMoving = 2000;
 		timeOfDoorOpen = 5000;
-		
+		ranShutdown = r.nextInt(4) + 1;
+		ranBlock = r.nextInt(4) + 1;
+		ranFloor = r.nextInt(9) + 1;
 		// Scenario 1 passenger block door
-		if (number == 3) {
+		if (ranBlock == 3) {
 			timeOfDoorOpen = 10000;
 		}
 		subsystem.statusUpdate(elenumber, currentfloor, state);
-		operationCount=0;
 	}
 
 	/**
@@ -34,7 +37,7 @@ public class Elevator implements Runnable{
 	 */
 	public void move(int order) {
 		// Scenario 2 elevator 4 shut down at 3rd floor
-		if (elenumber == 4 && currentfloor > 2) {
+		if (ranShutdown == 4 && ranFloor > 2) {
 			timeOfElevatorMoving = 6000;
 		}
 		if (order == 0) {
@@ -91,11 +94,17 @@ public class Elevator implements Runnable{
 		}
 	}
 	
+	/**
+	 * Shut down the elevate by changing the state
+	 */
 	public void emegencyShutdown() {
 		state = new Shutdown();
 		subsystem.statusUpdate(elenumber, currentfloor, state);
 	}
 	
+	/**
+	 * Change the state to door block and inform to scheduler and floor user
+	 */
 	public void doorIsBlock() {
 		state = new DoorBlock();
 		subsystem.statusUpdate(elenumber, currentfloor, state);
